@@ -1,0 +1,65 @@
+application:
+  title: FRS - FRecipe System
+  version: 0.0.1-SNAPSHOT
+
+spring:
+  flyway:
+    enabled: true
+    locations: classpath:/db/migration
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:frs}?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=TRUE
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+  jpa:
+    show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+      jdbc:
+        time_zone: ${DB_TIME_ZONE:Asia/Ho_Chi_Minh}
+  thymeleaf:
+    check-template-location: false
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+
+jwt:
+  access-token:
+    expiration: ${JWT_ACCESS_EXPIRATION:60}
+  secret-key: ${JWT_SECRET:token-secret-key}
+  refresh-token:
+    expiration: ${JWT_REFRESH_EXPIRATION:10080}
+
+redis:
+  host: ${REDIS_HOST:127.0.0.1}
+  port: ${REDIS_PORT:6379}
+  database: ${REDIS_DATABASE:0}
+  password: ${REDIS_PASSWORD:142378956}
+  timeout: 10000
+
+server:
+  time-zone: ${SERVER_TIME_ZONE:Asia/Ho_Chi_Minh}
+  port: ${SERVER_PORT:8080}
+  address: ${SERVER_ADDRESS:localhost}
+  servlet:
+    context-path: /api
+
+logging:
+  pattern:
+    console: "%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n"
+    file: "%d %-5level [%thread] %logger{0} : %msg%n"
+  level:
+    root: WARN
+    com.nps.server: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org:
+      hibernate.SQL: DEBUG
+      hibernate.type.descriptor.sql.BasicBinder: TRACE
+  file:
+    name: logs/app.log
