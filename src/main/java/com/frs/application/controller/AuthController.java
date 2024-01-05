@@ -1,6 +1,7 @@
 package com.frs.application.controller;
 
 import com.frs.application.payload.request.AccountSignInRequest;
+import com.frs.application.payload.request.TokenRefreshRequest;
 import com.frs.application.payload.response.TokenResponse;
 import com.frs.application.service.IAuthService;
 import jakarta.validation.Valid;
@@ -17,5 +18,10 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody @Valid AccountSignInRequest loginRequest) {
         return ResponseEntity.ok(authService.login(loginRequest));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<TokenResponse> refresh(@RequestBody TokenRefreshRequest refreshRequest) {
+        return ResponseEntity.ok(authService.refresh(refreshRequest));
     }
 }

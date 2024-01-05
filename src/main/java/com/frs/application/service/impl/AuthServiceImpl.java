@@ -5,6 +5,7 @@ import com.frs.application.dto.TokenDTO;
 import com.frs.application.logic.IAccountLogic;
 import com.frs.application.logic.ITokenLogic;
 import com.frs.application.payload.request.AccountSignInRequest;
+import com.frs.application.payload.request.TokenRefreshRequest;
 import com.frs.application.payload.response.TokenResponse;
 import com.frs.application.securiry.JwtProviderImpl;
 import com.frs.application.service.IAuthService;
@@ -19,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -56,6 +58,20 @@ public class AuthServiceImpl implements IAuthService {
             log.error("{} - {}", e.getClass().getSimpleName(), e.getMessage());
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.account.account_not_found"));
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TokenResponse refresh(TokenRefreshRequest refreshRequest) {
+        TokenDTO tokenDTO = tokenLogic.findByToken(refreshRequest.getToken());
+        if (Objects.isNull(tokenDTO) || tokenProvider.isTimeRefreshTokenExpired(tokenDTO.getExpiresAt())) {
+            throw new SystemBadRequestException(MessageHelper.getMessage("validation.account.token_not_found"));
+        }
+
+        var accountDTO = accountLogic.findByUsername(tokenDTO.getUsername());
+
+        final var accessToken = tokenProvider.createToken(tokenDTO.getUsername(), accountDTO.getRole());
+        return new TokenResponse(accessToken, refreshRequest.getToken());
     }
 
     private boolean isEmail(String identifier) {
