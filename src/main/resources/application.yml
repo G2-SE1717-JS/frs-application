@@ -35,13 +35,6 @@ jwt:
   refresh-token:
     expiration: ${JWT_REFRESH_EXPIRATION:10080}
 
-redis:
-  host: ${REDIS_HOST:127.0.0.1}
-  port: ${REDIS_PORT:6379}
-  database: ${REDIS_DATABASE:0}
-  password: ${REDIS_PASSWORD:142378956}
-  timeout: 10000
-
 server:
   time-zone: ${SERVER_TIME_ZONE:Asia/Ho_Chi_Minh}
   port: ${SERVER_PORT:8080}
