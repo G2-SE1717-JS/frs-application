@@ -37,11 +37,9 @@ public class TokenLogicImpl implements ITokenLogic {
         if (token != null) {
             token.setRefreshToken(tokenDTO.getRefreshToken());
             token.setExpiresAt(tokenDTO.getExpiresAt());
-            token.setVersion(VersionUtil.increment(token.getVersion()));
             token.setDeleted(false);
             token.setLastModifiedDate(tokenDTO.getLastModifiedDate());
         } else {
-            tokenDTO.setVersion(VersionUtil.increment(tokenDTO.getVersion()));
             token = mapper.toEntity(tokenDTO);
         }
         token = repository.save(token);

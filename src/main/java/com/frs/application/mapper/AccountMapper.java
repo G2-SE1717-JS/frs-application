@@ -16,7 +16,6 @@ public class AccountMapper {
                 .role(entity.getRole())
                 .verified(entity.isVerified())
                 .status(entity.isStatus())
-                .version(entity.getVersion())
                 .isDeleted(entity.isDeleted())
                 .createdDate(entity.getCreatedDate())
                 .lastModifiedDate(entity.getLastModifiedDate())
@@ -32,7 +31,6 @@ public class AccountMapper {
         entity.setRole(dto.getRole());
         entity.setVerified(dto.isVerified());
         entity.setStatus(dto.isStatus());
-        entity.setVersion(dto.getVersion());
         entity.setDeleted(dto.isDeleted());
         entity.setCreatedDate(dto.getCreatedDate());
         entity.setLastModifiedDate(dto.getLastModifiedDate());
