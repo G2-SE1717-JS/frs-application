@@ -1,6 +1,4 @@
 package com.frs.application.service.impl;
-
-import com.frs.application.domain.Ingredients;
 import com.frs.application.dto.IngredientsDTO;
 import com.frs.application.logic.IIngredientsLogic;
 import com.frs.application.payload.request.ingredients.IngredientsCreateRequest;
@@ -9,8 +7,6 @@ import com.frs.application.payload.response.IngredientsResponse;
 import com.frs.application.service.IIngredientsService;
 import com.frs.core.exceptions.SystemBadRequestException;
 import com.frs.core.helpers.MessageHelper;
-import com.frs.core.utils.VersionUtil;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
