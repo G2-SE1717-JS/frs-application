@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/ingredients")
 @RequiredArgsConstructor
 public class IngredientsController {
@@ -21,7 +21,6 @@ public class IngredientsController {
     private final IIngredientsService iIngredientsService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<IngredientsResponse> create(@RequestBody @Valid IngredientsCreateRequest request) {
         return ResponseEntity.ok(iIngredientsService.create(request));
     }
@@ -38,7 +37,6 @@ public class IngredientsController {
         return ResponseEntity.ok().build();
     }
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<IngredientsResponse>> getAll() {
         return ResponseEntity.ok(iIngredientsService.getAll());
     }
