@@ -8,6 +8,8 @@ import com.frs.application.repository.StepRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class StepLogicImpl implements IStepLogic {
@@ -24,6 +26,18 @@ public class StepLogicImpl implements IStepLogic {
                 )
         ).orElse(null);
         return mapper.toDto(step);
+    }
+
+    @Override
+    public List<StepDTO> findAllByRecipeId(Long recipeId) {
+        List<Step> steps = repository.findAll(
+                (root, query, criteriaBuilder)
+                        -> criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("recipeId"), recipeId),
+                        criteriaBuilder.equal(root.get("isDeleted"), false)
+                )
+        );
+        return steps.stream().map(mapper::toDto).toList();
     }
 
     @Override

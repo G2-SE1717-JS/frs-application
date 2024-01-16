@@ -8,6 +8,7 @@ import com.frs.application.service.IAccountService;
 import com.frs.core.exceptions.SystemBadRequestException;
 import com.frs.core.helpers.MessageHelper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AccountServiceImpl implements IAccountService {
     private final IAccountLogic accountLogic;
     @Override

@@ -8,6 +8,8 @@ import com.frs.application.repository.StepImgRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class StepImgLogicIpml implements IStepImgLogic {
@@ -30,5 +32,27 @@ public class StepImgLogicIpml implements IStepImgLogic {
                 )
         ).orElse(null);
         return mapper.toDto(stepImg);
+    }
+
+    @Override
+    public List<StepImgDTO> findAllByStepId(Long stepId) {
+        List<StepImg> stepImgs = repository.findAll(
+                (root, query, criteriaBuilder)
+                        -> criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("stepId"), stepId),
+                        criteriaBuilder.equal(root.get("isDeleted"), false)
+                )
+        );
+        return stepImgs.stream().map(mapper::toDto).toList();
+    }
+
+    @Override
+    public void deleteImageByStepId(Long stepId) {
+        repository.delete(
+                (root, query, criteriaBuilder)
+                        -> criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("stepId"), stepId),
+                        criteriaBuilder.equal(root.get("isDeleted"), false)
+                ));
     }
 }
