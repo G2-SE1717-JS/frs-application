@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class BlockAccountAddRequest {
-    private Long accountId;
+public class BlockAccountCreateRequest {
     private Long blockedAccountId;
 }

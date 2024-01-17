@@ -1,9 +1,10 @@
 package com.frs.application.service.impl;
 
+import com.frs.application.dto.AccountDTO;
 import com.frs.application.dto.BlockAccountDTO;
 import com.frs.application.logic.IAccountLogic;
 import com.frs.application.logic.IBlockAccountLogic;
-import com.frs.application.payload.request.blockAccount.BlockAccountAddRequest;
+import com.frs.application.payload.request.blockAccount.BlockAccountCreateRequest;
 import com.frs.application.payload.response.BlockAccountResponse;
 import com.frs.application.service.IBlockAccountService;
 import com.frs.core.exceptions.SystemBadRequestException;
@@ -34,11 +35,17 @@ public class BlockAccountServiceImpl implements IBlockAccountService {
         ).collect(Collectors.toList());
     }
     @Override
-    public BlockAccountResponse add(BlockAccountAddRequest request) {
+    public BlockAccountResponse create(BlockAccountCreateRequest request, String remoteUser) {
+        AccountDTO accountDTO = accountLogic.findByUsername(remoteUser);
         BlockAccountDTO blockAccountDTO = BlockAccountDTO.builder()
                 .accountId(request.getAccountId())
                 .blockAccountId(request.getBlockedAccountId())
                 .build();
+        if (blockAccountLogic.isAccountBlocked(request.getBlockedAccountId(), accountDTO.getId())) {
+            blockAccountDTO.setDeleted(true);
+        } else {
+            blockAccountDTO = blockAccountLogic.save(blockAccountDTO);
+        }
         blockAccountDTO = blockAccountLogic.save(blockAccountDTO);
         return BlockAccountResponse.builder()
                 .id(blockAccountDTO.getId())

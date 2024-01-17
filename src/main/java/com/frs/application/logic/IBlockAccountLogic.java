@@ -8,5 +8,5 @@ import java.util.List;
 public interface IBlockAccountLogic extends BaseLogic<BlockAccountDTO, Long> {
     List<BlockAccountDTO> findByAccountId(Long accountId);
 
-    boolean isAccountBlocked(Long blockedAccountId);
+    boolean isAccountBlocked(Long blockedAccountId, Long accountId);
 }

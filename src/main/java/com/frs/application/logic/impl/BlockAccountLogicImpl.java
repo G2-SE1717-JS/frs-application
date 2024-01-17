@@ -29,12 +29,12 @@ public class BlockAccountLogicImpl implements IBlockAccountLogic {
     }
 
     @Override
-    public boolean isAccountBlocked(Long blockedAccountId){
+    public boolean isAccountBlocked(Long blockedAccountId, Long accountId){
         BlockAccount blockAccount = repository.findOne(
                 (root, query, criteriaBuilder)
                         -> criteriaBuilder.and(
                         criteriaBuilder.equal(root.get("blockedAccountId"), blockedAccountId),
-                        criteriaBuilder.equal(root.get("isDeleted"), false)
+                        criteriaBuilder.equal(root.get("accountId"), accountId)
                 )
                 ).orElse(null);
         return blockAccount != null;
