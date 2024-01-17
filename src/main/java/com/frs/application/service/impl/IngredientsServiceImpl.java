@@ -1,6 +1,4 @@
 package com.frs.application.service.impl;
-
-import com.frs.application.domain.Ingredients;
 import com.frs.application.dto.IngredientsDTO;
 import com.frs.application.logic.IIngredientsLogic;
 import com.frs.application.payload.request.ingredients.IngredientsCreateRequest;
@@ -9,9 +7,8 @@ import com.frs.application.payload.response.IngredientsResponse;
 import com.frs.application.service.IIngredientsService;
 import com.frs.core.exceptions.SystemBadRequestException;
 import com.frs.core.helpers.MessageHelper;
-import com.frs.core.utils.VersionUtil;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class IngredientsServiceImpl implements IIngredientsService {
     private final IIngredientsLogic ingredientsLogic;
     @Override

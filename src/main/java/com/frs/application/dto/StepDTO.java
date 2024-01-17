@@ -8,8 +8,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class IngredientsDTO extends BaseDTO {
-
-    private String name;
-    private String image;
+public class StepDTO extends BaseDTO {
+    private Long recipeId;
+    private Long orderValue;
+    private String description;
 }
