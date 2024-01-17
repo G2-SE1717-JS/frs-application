@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/recipes")
 @RequiredArgsConstructor
@@ -26,6 +28,10 @@ public class RecipeController {
     @PutMapping("/{id}")
     public void update(@PathVariable Long id, @RequestBody RecipeUpdateRequest recipe){
         recipeService.update(id, recipe);
+    }
+    @GetMapping
+    public List<RecipeResponse> getAll(){
+        return recipeService.getAll();
     }
 
 }
