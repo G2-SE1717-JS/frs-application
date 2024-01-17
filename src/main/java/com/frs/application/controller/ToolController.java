@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping
+@RequestMapping ("/tool")
 @RequiredArgsConstructor
 public class ToolController {
     private final IToolService iToolService;
