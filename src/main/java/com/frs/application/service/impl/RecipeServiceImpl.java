@@ -1,7 +1,4 @@
 package com.frs.application.service.impl;
-
-import com.frs.application.domain.Step;
-import com.frs.application.domain.StepImg;
 import com.frs.application.dto.AccountDTO;
 import com.frs.application.dto.RecipeDTO;
 import com.frs.application.dto.StepDTO;
@@ -13,7 +10,6 @@ import com.frs.application.logic.IStepLogic;
 import com.frs.application.payload.request.recipe.RecipeCreateRequest;
 import com.frs.application.payload.request.recipe.RecipeUpdateRequest;
 import com.frs.application.payload.request.step.StepCreateRequest;
-import com.frs.application.payload.response.IngredientsResponse;
 import com.frs.application.payload.response.RecipeResponse;
 import com.frs.application.payload.response.StepResponse;
 import com.frs.application.service.IRecipeService;
@@ -22,8 +18,6 @@ import com.frs.core.helpers.MessageHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -82,7 +76,8 @@ public class RecipeServiceImpl implements IRecipeService {
                     .createdDate(recipeDTO.getCreatedDate())
                     .lastModifiedDate(recipeDTO.getLastModifiedDate())
                     .steps(stepDTOS.stream().map(stepDTO -> {
-                        List<String> images = stepImgDTOS.stream().filter(stepImgDTO -> Objects.equals(stepImgDTO.getStepId(), stepDTO.getId())).map(StepImgDTO::getImage).collect(Collectors.toList());
+                        List<String> images = stepImgDTOS.stream().filter(stepImgDTO -> Objects.equals(stepImgDTO
+                                .getStepId(), stepDTO.getId())).map(StepImgDTO::getImage).collect(Collectors.toList());
                         return StepResponse.builder()
                                 .description(stepDTO.getDescription())
                                 .orderValue(stepDTO.getOrderValue())
@@ -97,7 +92,8 @@ public class RecipeServiceImpl implements IRecipeService {
     public RecipeResponse getById(Long id) {
         RecipeDTO recipeDTO = recipeLogic.getById(id);
         List<StepDTO> stepDTOS = stepLogic.findAllByRecipeId(id);
-        List<StepImgDTO> stepImgDTOS = stepDTOS.stream().map(stepDTO -> stepImgLogic.findAllByStepId(stepDTO.getId())).flatMap(List::stream).collect(Collectors.toList());
+        List<StepImgDTO> stepImgDTOS = stepDTOS.stream().map(stepDTO -> stepImgLogic.findAllByStepId(stepDTO.getId()))
+                .flatMap(List::stream).collect(Collectors.toList());
 
         return RecipeResponse.builder()
                 .id(recipeDTO.getId())
@@ -108,7 +104,8 @@ public class RecipeServiceImpl implements IRecipeService {
                 .createdDate(recipeDTO.getCreatedDate())
                 .lastModifiedDate(recipeDTO.getLastModifiedDate())
                 .steps(stepDTOS.stream().map(stepDTO -> {
-                    List<String> images = stepImgDTOS.stream().filter(stepImgDTO -> Objects.equals(stepImgDTO.getStepId(), stepDTO.getId())).map(StepImgDTO::getImage).collect(Collectors.toList());
+                    List<String> images = stepImgDTOS.stream().filter(stepImgDTO -> Objects.equals(stepImgDTO
+                            .getStepId(), stepDTO.getId())).map(StepImgDTO::getImage).collect(Collectors.toList());
                     return StepResponse.builder()
                             .description(stepDTO.getDescription())
                             .orderValue(stepDTO.getOrderValue())
@@ -138,5 +135,36 @@ public class RecipeServiceImpl implements IRecipeService {
                 .createdDate(recipeDTO.getCreatedDate())
                 .lastModifiedDate(recipeDTO.getLastModifiedDate())
                 .build();
+    }
+
+    @Override
+    public List<RecipeResponse> getAllByAccountId(String remoteUser) {
+        AccountDTO accountDTO = accountLogic.findByUsername(remoteUser);
+        List<RecipeDTO> recipeDTOS = recipeLogic.getAllByAccountId(accountDTO.getId());
+        return recipeDTOS.stream().map(recipeDTO -> {
+            List<StepDTO> stepDTOS = stepLogic.findAllByRecipeId(recipeDTO.getId());// lấy tất cả các bước của công thức
+            List<StepImgDTO> stepImgDTOS = stepDTOS.stream().map(stepDTO ->
+                    stepImgLogic.findAllByStepId(stepDTO.getId())).flatMap(List::stream)
+                    .collect(Collectors.toList());//lấy tất cả các ảnh của các bước
+            return RecipeResponse.builder()
+                    .id(recipeDTO.getId())
+                    .title(recipeDTO.getTitle())
+                    .description(recipeDTO.getDescription())
+                    .ration(recipeDTO.getRation())
+                    .cookingTime(recipeDTO.getCookingTime())
+                    .createdDate(recipeDTO.getCreatedDate())
+                    .lastModifiedDate(recipeDTO.getLastModifiedDate())
+                    .steps(stepDTOS.stream().map(stepDTO -> {
+                        List<String> images = stepImgDTOS.stream().filter(stepImgDTO -> Objects.equals(
+                                stepImgDTO.getStepId(), stepDTO.getId())).map(StepImgDTO::getImage)
+                                .collect(Collectors.toList());
+                        return StepResponse.builder()
+                                .description(stepDTO.getDescription())
+                                .orderValue(stepDTO.getOrderValue())
+                                .stepImgs(images)
+                                .build();
+                    }).collect(Collectors.toList()))
+                    .build();
+        }).collect(Collectors.toList());
     }
 }

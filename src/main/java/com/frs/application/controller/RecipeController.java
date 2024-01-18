@@ -34,4 +34,9 @@ public class RecipeController {
         return recipeService.getAll();
     }
 
+    @GetMapping("/account")
+    public List<RecipeResponse> getAllByAccountId(HttpServletRequest req){
+        return recipeService.getAllByAccountId(req.getRemoteUser());
+    }
+
 }
