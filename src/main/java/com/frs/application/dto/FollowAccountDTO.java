@@ -9,6 +9,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Data
 public class FollowAccountDTO extends BaseDTO {
-    private Long accountID;
-    private Long followedAccountID;
+    private Long accountId;
+    private Long followedAccountId;
 }

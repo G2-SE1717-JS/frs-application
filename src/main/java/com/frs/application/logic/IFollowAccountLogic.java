@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface IFollowAccountLogic extends BaseLogic<FollowAccountDTO, Long> {
 
-    List<FollowAccountDTO> getAllFollow();
+    List<FollowAccountDTO> getAllFollow(Long accountId);
 
+    FollowAccountDTO getById(Long accountId, Long followedAccountId);
 
+    String getUserName();
 }

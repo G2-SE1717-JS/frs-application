@@ -5,6 +5,9 @@ import com.frs.application.dto.FollowAccountDTO;
 import com.frs.application.logic.IFollowAccountLogic;
 import com.frs.application.mapper.FollowAccountMapper;
 import com.frs.application.repository.FollowAccountRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +19,13 @@ public class FollowAccountLogicImpl implements IFollowAccountLogic {
     private final FollowAccountRepository repository;
     private final FollowAccountMapper mapper;
     @Override
-    public List<FollowAccountDTO> getAllFollow() {
+    public List<FollowAccountDTO> getAllFollow(Long accountId) {
         List<FollowAccount> followAccountDTO = repository.findAll(
                 (root, query, criteriaBuilder)
-                        -> criteriaBuilder.equal(root.get("isDeleted"), false)
+                        -> criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("accountId"), accountId),
+                        criteriaBuilder.equal(root.get("isDeleted"), false)
+                )
         );
         return followAccountDTO.stream().map(mapper::toDto).toList();
     }
@@ -33,13 +39,28 @@ public class FollowAccountLogicImpl implements IFollowAccountLogic {
 
     @Override
     public FollowAccountDTO getById(Long aLong) {
+        return null;
+    }
+
+    @Override
+    public FollowAccountDTO getById(Long accountId, Long followedAccountId) {
         FollowAccount followAccount = repository.findOne(
                 (root, query, criteriaBuilder)
                         -> criteriaBuilder.and(
-                        criteriaBuilder.equal(root.get("id"), aLong),
+                        criteriaBuilder.equal(root.get("accountId"), accountId),
+                        criteriaBuilder.equal(root.get("followedAccountId"), followedAccountId),
                         criteriaBuilder.equal(root.get("isDeleted"), false)
                 )
         ).orElse(null);
         return mapper.toDto(followAccount);
+    }
+    @Override
+    public String getUserName() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return userDetails.getUsername();
+        }
+        return null;
     }
 }

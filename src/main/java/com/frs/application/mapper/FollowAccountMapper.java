@@ -10,8 +10,8 @@ public class FollowAccountMapper {
         if (entity == null) return null;
         return FollowAccountDTO.builder()
                 .id(entity.getId())
-                .accountID(entity.getAccountID())
-                .followedAccountID(entity.getFollowedAccountID())
+                .accountId(entity.getAccountId())
+                .followedAccountId(entity.getFollowedAccountId())
                 .isDeleted(entity.isDeleted())
                 .createdDate(entity.getCreatedDate())
                 .lastModifiedDate(entity.getLastModifiedDate())
@@ -21,8 +21,8 @@ public class FollowAccountMapper {
         if (dto == null) return null;
         FollowAccount entity = new FollowAccount();
         entity.setId(dto.getId());
-        entity.setAccountID(dto.getAccountID());
-        entity.setFollowedAccountID(dto.getFollowedAccountID());
+        entity.setAccountId(dto.getAccountId());
+        entity.setFollowedAccountId(dto.getFollowedAccountId());
         entity.setDeleted(dto.isDeleted());
         entity.setCreatedDate(dto.getCreatedDate());
         entity.setLastModifiedDate(dto.getLastModifiedDate());

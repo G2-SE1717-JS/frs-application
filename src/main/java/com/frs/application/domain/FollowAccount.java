@@ -7,9 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 
-@Table(name = "followAccount")
+@Table(name = "follow_account")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -19,8 +18,6 @@ public class FollowAccount extends BaseDomain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long accountID;
-    private Long followedAccountID;
-    private LocalDateTime createdDate;
-    private LocalDateTime lastModifiedDate;
+    private Long accountId;
+    private Long followedAccountId;
 }

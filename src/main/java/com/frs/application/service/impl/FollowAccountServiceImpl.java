@@ -1,16 +1,17 @@
 package com.frs.application.service.impl;
 
+import com.frs.application.dto.AccountDTO;
 import com.frs.application.dto.FollowAccountDTO;
 import com.frs.application.logic.IFollowAccountLogic;
-import com.frs.application.payload.request.followaccount.FollowAccountCreateRequest;
-import com.frs.application.payload.request.followaccount.FollowAccountDeleteRequest;
+import com.frs.application.logic.impl.AccountLogicImpl;
 import com.frs.application.payload.response.FollowAccountResponse;
+import com.frs.application.securiry.AccountDetails;
 import com.frs.application.service.IFollowAccountService;
 import com.frs.core.exceptions.SystemBadRequestException;
 import com.frs.core.helpers.MessageHelper;
-import com.frs.core.utils.VersionUtil;
-import jakarta.transaction.Transactional;
+import com.frs.core.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,94 +22,75 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FollowAccountServiceImpl implements IFollowAccountService {
     private final IFollowAccountLogic followAccountLogic;
+    private final AccountLogicImpl accountLogic;
+
     @Override
     public List<FollowAccountResponse> getAll() {
-        List<FollowAccountDTO> followAccountDTOS = followAccountLogic.getAllFollow();
+        String currentUser = followAccountLogic.getUserName();
+        AccountDTO accountDTO = accountLogic.findByUsername(currentUser);
+        List<FollowAccountDTO> followAccountDTOS = followAccountLogic.getAllFollow(accountDTO.getId());
         return followAccountDTOS.stream().map(
                 FollowAccountDTO -> FollowAccountResponse.builder()
                         .id(FollowAccountDTO.getId())
-                        .accountID(FollowAccountDTO.getAccountID())
-                        .followedAccountID(FollowAccountDTO.getFollowedAccountID())
+                        .accountId(FollowAccountDTO.getAccountId())
+                        .followedAccountId(FollowAccountDTO.getFollowedAccountId())
                         .createdDate(FollowAccountDTO.getCreatedDate())
                         .lastModifiedDate(FollowAccountDTO.getLastModifiedDate())
                         .build()
         ).collect(Collectors.toList());
     }
+
     @Override
-    public FollowAccountResponse create(FollowAccountCreateRequest request) {
-        FollowAccountDTO followAccountDTOS = FollowAccountDTO.builder()
-                .followedAccountID(request.getFollowAccountID())
-                .build();
-        followAccountDTOS = followAccountLogic.save(followAccountDTOS);
+    public FollowAccountResponse create(Long followedAccountId) {
+        String currentUser = followAccountLogic.getUserName();
+        AccountDTO accountDTO = accountLogic.findByUsername(currentUser);
+        FollowAccountDTO followAccountDTO = followAccountLogic.getById(accountDTO.getId(), followedAccountId);
+        if (followAccountDTO != null && followAccountDTO.isDeleted() == true) {
+            followAccountDTO.setDeleted(false);
+            followAccountLogic.save(followAccountDTO);
+        } else {
+            followAccountDTO = FollowAccountDTO.builder()
+                    .accountId(accountDTO.getId())
+                    .followedAccountId(followedAccountId)
+                    .build();
+            followAccountLogic.save(followAccountDTO);
+        }
         return FollowAccountResponse.builder()
-                .id(followAccountDTOS.getId())
-                .accountID(followAccountDTOS.getAccountID())
-                .followedAccountID(followAccountDTOS.getFollowedAccountID())
-                .createdDate(followAccountDTOS.getCreatedDate())
-                .lastModifiedDate(followAccountDTOS.getLastModifiedDate())
+                .id(followAccountDTO.getId())
+                .accountId(followAccountDTO.getAccountId())
+                .followedAccountId(followAccountDTO.getFollowedAccountId())
+                .createdDate(followAccountDTO.getCreatedDate())
+                .lastModifiedDate(followAccountDTO.getLastModifiedDate())
                 .build();
     }
 
     @Override
-    public FollowAccountResponse getById(Long id) {
-        FollowAccountDTO followAccountDTOS = followAccountLogic.getById(id);
+    public FollowAccountResponse getById(Long followedAccountId) {
+        String currentUser = followAccountLogic.getUserName();
+        AccountDTO accountDTO = accountLogic.findByUsername(currentUser);
+        FollowAccountDTO followAccountDTOS = followAccountLogic.getById(accountDTO.getId(), followedAccountId);
         if (Objects.isNull(followAccountDTOS)) {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.followAccount.not-existed"));
         }
         return FollowAccountResponse.builder()
                 .id(followAccountDTOS.getId())
-                .accountID(followAccountDTOS.getAccountID())
-                .followedAccountID(followAccountDTOS.getFollowedAccountID())
+                .accountId(followAccountDTOS.getAccountId())
+                .followedAccountId(followAccountDTOS.getFollowedAccountId())
                 .createdDate(followAccountDTOS.getCreatedDate())
                 .lastModifiedDate(followAccountDTOS.getLastModifiedDate())
                 .build();
     }
-
-/*   @Override
-    public IngredientsResponse update(Long id, IngredientsUpdateRequest request) {
-        IngredientsDTO ingredientsDTO = ingredientsLogic.getById(id);
-        if (Objects.isNull(ingredientsDTO))
-            throw new SystemBadRequestException(MessageHelper.getMessage("validation.ingredients.not-existed"));
-        ingredientsDTO = IngredientsDTO.builder()
-                .id(ingredientsDTO.getId())
-                .name(request.getName())
-                .image(request.getImage())
-                .createdDate(ingredientsDTO.getCreatedDate())
-                .build();
-        ingredientsDTO=ingredientsLogic.save(ingredientsDTO);
-        return IngredientsResponse.builder()
-                .id(ingredientsDTO.getId())
-                .name(ingredientsDTO.getName())
-                .image(ingredientsDTO.getImage())
-                .createdDate(ingredientsDTO.getCreatedDate())
-                .lastModifiedDate(ingredientsDTO.getLastModifiedDate())
-                .build();
-    }
- */
 
     @Override
-    public FollowAccountResponse delete(FollowAccountDeleteRequest request) {
-        FollowAccountDTO followAccountDTOS = FollowAccountDTO.builder()
-                .followedAccountID(request.getFollowAccountID())
-                .build();
-        followAccountDTOS = followAccountLogic.save(followAccountDTOS);
-        return FollowAccountResponse.builder()
-                .id(followAccountDTOS.getId())
-                .accountID(followAccountDTOS.getAccountID())
-                .followedAccountID(followAccountDTOS.getFollowedAccountID())
-                .createdDate(followAccountDTOS.getCreatedDate())
-                .lastModifiedDate(followAccountDTOS.getLastModifiedDate())
-                .build();
-    }
-/*    @Override
-    public void delete(Long id) {
-        IngredientsDTO ingredientsDTO = ingredientsLogic.getById(id);
-        if (Objects.isNull(ingredientsDTO ))
+    public void delete(Long followedAccountId) {
+        String currentUser = followAccountLogic.getUserName();
+        AccountDTO accountDTO = accountLogic.findByUsername(currentUser);
+        FollowAccountDTO followAccountDTO = followAccountLogic.getById(accountDTO.getId(), followedAccountId);
+        if (Objects.isNull(followAccountDTO)) {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.service.not-existed"));
-
-        ingredientsDTO.setDeleted(true);
-        ingredientsLogic.save(ingredientsDTO);
+        } else {
+            followAccountDTO.setDeleted(true);
+            followAccountLogic.save(followAccountDTO);
+        }
     }
-
- */
 }

@@ -5,6 +5,7 @@ import com.frs.application.payload.request.AccountCreateRequest;
 import com.frs.application.payload.request.AccountUpdateRequest;
 import com.frs.application.payload.response.AccountResponse;
 import com.frs.application.service.IAccountService;
+import com.frs.application.securiry.WebSecurityConfig;
 import com.frs.core.exceptions.SystemBadRequestException;
 import com.frs.core.helpers.MessageHelper;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AccountServiceImpl implements IAccountService {
     private final IAccountLogic accountLogic;
+
+    private final WebSecurityConfig passwordEncoder;;
     @Override
 
     public List<AccountResponse> getAll() {
@@ -45,7 +48,7 @@ public class AccountServiceImpl implements IAccountService {
         AccountDTO accountDTO = AccountDTO.builder()
                 .email(request.getEmail())
                 .username(request.getUsername())
-                .password(request.getPassword())
+                .password(passwordEncoder.passwordEncoder().encode(request.getPassword()))
                 .role(request.getRole())
                 .verified(request.isVerified())
                 .status(request.isStatus())

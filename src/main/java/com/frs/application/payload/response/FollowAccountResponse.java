@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FollowAccountResponse implements Serializable {
     private Long id;
-    private Long accountID;
-    private Long followedAccountID;
+    private Long accountId;
+    private Long followedAccountId;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
 }
