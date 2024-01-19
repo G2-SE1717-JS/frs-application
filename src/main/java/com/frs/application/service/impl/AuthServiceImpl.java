@@ -35,17 +35,17 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public TokenResponse login(AccountSignInRequest loginRequest) {
-        if (isEmail(loginRequest.getIdentifier())) {
-            AccountDTO accountDTO = accountLogic.findByEmail(loginRequest.getIdentifier());
-            loginRequest.setIdentifier(accountDTO != null ? accountDTO.getUsername() : null);
+        if (isEmail(loginRequest.getIdentifier())) {//check if email mà người dùng nhập vào có tồn tại trong db hay không
+            AccountDTO accountDTO = accountLogic.findByEmail(loginRequest.getIdentifier());//nếu có thì lấy ra accountDTO
+            loginRequest.setIdentifier(accountDTO != null ? accountDTO.getUsername() : null);//nếu accountDTO khác null thì set lại username cho loginRequest
         }
 
         try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getIdentifier(), loginRequest.getPassword())
+            Authentication authentication = authenticationManager.authenticate(//kiểm tra xem username và password có đúng hay không
+                    new UsernamePasswordAuthenticationToken(loginRequest.getIdentifier(), loginRequest.getPassword())//nếu đúng thì trả về authentication
             );
 
-            final var accessToken = tokenProvider.createToken(loginRequest.getIdentifier(),
+            final var accessToken = tokenProvider.createToken(loginRequest.getIdentifier(),//tạo token
                     UserRole.valueOf(authentication.getAuthorities().iterator().next().getAuthority()));
             final var refreshToken = UUID.randomUUID().toString();
             tokenLogic.save(TokenDTO.builder()
