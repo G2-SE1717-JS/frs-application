@@ -10,4 +10,5 @@ public interface IIngredientsLogic extends BaseLogic<IngredientsDTO, Long> {
     IngredientsDTO findByName(String name);
 
     List<IngredientsDTO> findAll();
+
 }

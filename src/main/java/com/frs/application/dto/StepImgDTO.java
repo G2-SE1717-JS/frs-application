@@ -5,11 +5,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+@Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-@Data
-public class IngredientsDTO extends BaseDTO {
-
-    private String name;
+public class StepImgDTO extends BaseDTO {
+    private Long stepId;
     private String image;
 }
