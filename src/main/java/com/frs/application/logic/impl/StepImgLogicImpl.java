@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class StepImgLogicIpml implements IStepImgLogic {
+public class StepImgLogicImpl implements IStepImgLogic {
     private final StepImgRepository repository;
     private final StepImgMapper mapper;
     @Override
