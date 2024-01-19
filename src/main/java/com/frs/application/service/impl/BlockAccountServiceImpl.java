@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class BlockAccountServiceImpl implements IBlockAccountService {
+
     private final IBlockAccountLogic blockAccountLogic;
     private final IAccountLogic accountLogic;
 
@@ -35,13 +36,13 @@ public class BlockAccountServiceImpl implements IBlockAccountService {
         ).collect(Collectors.toList());
     }
     @Override
-    public BlockAccountResponse create(BlockAccountCreateRequest request, String remoteUser) {
+    public BlockAccountResponse create(Long blockAccountId, String remoteUser) {
         AccountDTO accountDTO = accountLogic.findByUsername(remoteUser);
         BlockAccountDTO blockAccountDTO = BlockAccountDTO.builder()
-                .accountId(request.getAccountId())
-                .blockAccountId(request.getBlockedAccountId())
+                .accountId(accountDTO.getId())
+                .blockAccountId(blockAccountId)
                 .build();
-        if (blockAccountLogic.isAccountBlocked(request.getBlockedAccountId(), accountDTO.getId())) {
+        if (blockAccountLogic.isAccountBlocked(blockAccountId, accountDTO.getId())) {
             blockAccountDTO.setDeleted(true);
         } else {
             blockAccountDTO = blockAccountLogic.save(blockAccountDTO);

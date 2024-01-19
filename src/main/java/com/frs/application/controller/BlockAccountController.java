@@ -25,9 +25,9 @@ public class BlockAccountController {
         return ResponseEntity.ok(iBlockAccountService.getByAccountID(id));
     }
 
-    @PostMapping
-    public ResponseEntity<BlockAccountResponse> create(@RequestBody BlockAccountCreateRequest request, HttpServletRequest req) {
-        return ResponseEntity.ok(iBlockAccountService.create(request, req.getRemoteUser()));
+    @PostMapping("/{block_account_id}")
+    public ResponseEntity<BlockAccountResponse> create(@PathVariable Long blockAccountId, HttpServletRequest req) {
+        return ResponseEntity.ok(iBlockAccountService.create(blockAccountId, req.getRemoteUser()));
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {

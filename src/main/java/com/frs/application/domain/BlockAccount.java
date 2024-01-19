@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "accounts")
+@Table(name = "block_account")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

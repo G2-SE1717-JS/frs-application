@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IBlockAccountService {
     List<BlockAccountResponse> getByAccountID(Long accountId);
-    BlockAccountResponse create(BlockAccountCreateRequest request, String remoteUser);
+    BlockAccountResponse create(Long accountId, String remoteUser);
 
     void delete(Long id);
 }
