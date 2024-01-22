@@ -15,8 +15,6 @@ import java.util.List;
 public class RecipeLogicImpl implements IRecipeLogic {
     private final RecipeRepository repository;
     private final RecipeMapper mapper;
-
-
     @Override
     public RecipeDTO save(RecipeDTO recipeDTO) {
         Recipe recipe = mapper.toEntity(recipeDTO);
@@ -34,7 +32,6 @@ public class RecipeLogicImpl implements IRecipeLogic {
             ).orElse(null);
             return mapper.toDto(recipe);
     }
-
     @Override
     public RecipeDTO findByName(String name) {
         Recipe recipe = repository.findOne(
@@ -46,7 +43,6 @@ public class RecipeLogicImpl implements IRecipeLogic {
         ).orElse(null);
         return mapper.toDto(recipe);
     }
-
     @Override
     public List<RecipeDTO> findAll() {
         List<Recipe> recipeDTOS = repository.findAll(
@@ -55,4 +51,17 @@ public class RecipeLogicImpl implements IRecipeLogic {
         );
         return recipeDTOS.stream().map(mapper::toDto).toList();
     }
+
+    @Override
+    public List<RecipeDTO> getAllByAccountId(Long accountId) {
+        List<Recipe> recipeDTOS = repository.findAll(
+                (root, query, criteriaBuilder)
+                        -> criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("accountId"), accountId),
+                        criteriaBuilder.equal(root.get("isDeleted"), false)
+                )
+        );
+        return recipeDTOS.stream().map(mapper::toDto).toList();
+    }
+
 }

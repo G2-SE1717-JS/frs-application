@@ -12,5 +12,8 @@ public interface IRecipeLogic extends BaseLogic<RecipeDTO, Long> {
     RecipeDTO findByName(String name);
     List<RecipeDTO> findAll();
 
+    List<RecipeDTO> getAllByAccountId(Long accountId);
+
+
 
 }
