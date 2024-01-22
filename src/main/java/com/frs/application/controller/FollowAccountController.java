@@ -1,5 +1,6 @@
 package com.frs.application.controller;
 
+import com.frs.application.payload.request.followaccount.FollowAccountRequest;
 import com.frs.application.payload.response.FollowAccountResponse;
 import com.frs.application.service.IFollowAccountService;
 import lombok.RequiredArgsConstructor;
@@ -16,16 +17,16 @@ import java.util.List;
 public class FollowAccountController {
     private final IFollowAccountService followAccountService;
 
-    @PostMapping("follow/{id}")
+    @PostMapping("follow")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<FollowAccountResponse> create(@PathVariable Long id) {
-        return ResponseEntity.ok(followAccountService.create(id));
+    public ResponseEntity<FollowAccountResponse> create(@RequestBody FollowAccountRequest request) {
+        return ResponseEntity.ok(followAccountService.create(request));
     }
 
-    @DeleteMapping("unfollow/{id}")
+    @DeleteMapping("unfollow")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        followAccountService.delete(id);
+    public ResponseEntity<Void> delete(@RequestBody FollowAccountRequest request) {
+        followAccountService.delete(request);
         return ResponseEntity.ok().build();
     }
 

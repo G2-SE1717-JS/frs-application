@@ -38,29 +38,20 @@ public class FollowAccountLogicImpl implements IFollowAccountLogic {
     }
 
     @Override
-    public FollowAccountDTO getById(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public FollowAccountDTO getById(Long accountId, Long followedAccountId) {
+    public FollowAccountDTO getByIdAndFollowedId(Long accountId, Long followedAccountId, boolean isDeleted) {
         FollowAccount followAccount = repository.findOne(
                 (root, query, criteriaBuilder)
                         -> criteriaBuilder.and(
                         criteriaBuilder.equal(root.get("accountId"), accountId),
                         criteriaBuilder.equal(root.get("followedAccountId"), followedAccountId),
-                        criteriaBuilder.equal(root.get("isDeleted"), false)
+                        criteriaBuilder.equal(root.get("isDeleted"), isDeleted)
                 )
         ).orElse(null);
         return mapper.toDto(followAccount);
     }
+
     @Override
-    public String getUserName() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            return userDetails.getUsername();
-        }
+    public FollowAccountDTO getById(Long aLong) {
         return null;
     }
 }

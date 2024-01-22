@@ -8,6 +8,9 @@ import com.frs.application.logic.IAccountLogic;
 import com.frs.application.mapper.AccountMapper;
 import com.frs.application.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,5 +56,15 @@ public class AccountLogicImpl implements IAccountLogic {
     public AccountDTO getById(Long id) {
         Account account = repository.findById(id).orElse(null);
         return mapper.toDto(account);
+    }
+
+    @Override
+    public String getCurrentUserName() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return userDetails.getUsername();
+        }
+        return null;
     }
 }

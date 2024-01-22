@@ -9,7 +9,6 @@ public interface IFollowAccountLogic extends BaseLogic<FollowAccountDTO, Long> {
 
     List<FollowAccountDTO> getAllFollow(Long accountId);
 
-    FollowAccountDTO getById(Long accountId, Long followedAccountId);
+    FollowAccountDTO getByIdAndFollowedId(Long accountId, Long followedAccountId, boolean isDeleted);
 
-    String getUserName();
 }
