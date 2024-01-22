@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class CategoryService implements ICategoryService {
+public class CategoryServiceImpl implements ICategoryService {
     private final ICategoryLogic categoryLogic;
 
     @Override

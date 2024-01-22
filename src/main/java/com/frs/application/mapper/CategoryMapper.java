@@ -3,6 +3,8 @@ package com.frs.application.mapper;
 import com.frs.application.domain.Category;
 import com.frs.application.dto.CategoryDTO;
 import org.springframework.stereotype.Service;
+
+@Service
 public class CategoryMapper {
 
     public CategoryDTO toDto(Category entity) {
