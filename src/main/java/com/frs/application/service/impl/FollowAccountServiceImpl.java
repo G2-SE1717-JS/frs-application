@@ -52,8 +52,8 @@ public class FollowAccountServiceImpl implements IFollowAccountService {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.service.follow-yourself"));
         } else {
             FollowAccountDTO followAccountDTO = followAccountLogic.getByIdAndFollowedId(accountDTO.getId(), request.getFollowedAccountId(), true);
-            logger.info("Current record in follow account table: {}", followAccountDTO.toString());
             if (followAccountDTO != null) {
+                logger.info("Current record in follow account table: {}", followAccountDTO.toString());
                 followAccountDTO.setDeleted(false);
                 logger.info("Current status of the record: {}", followAccountDTO.isDeleted());
                 followAccountLogic.save(followAccountDTO);
