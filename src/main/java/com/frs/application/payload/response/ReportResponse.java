@@ -2,11 +2,8 @@ package com.frs.application.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.frs.application.domain.Step;
-import com.frs.application.domain.StepImg;
 import lombok.Builder;
 import lombok.Data;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -16,14 +13,14 @@ import java.util.List;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RecipeResponse implements Serializable {
+public class ReportResponse implements Serializable {
     private Long id;
-    private String title;
+    private Long accountId;
+    private Long recipeId;
     private String description;
-    private Long ration;
-    private LocalTime cookingTime;
-    private List<StepResponse> steps;
-    private boolean status;
+    private String reportStatus;
+    private String adminResponse;
+    private LocalDateTime adminResponseDate;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
 }

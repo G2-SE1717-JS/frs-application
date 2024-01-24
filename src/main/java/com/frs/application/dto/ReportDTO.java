@@ -1,22 +1,20 @@
 package com.frs.application.dto;
 
 import com.frs.core.base.BaseDTO;
-import com.google.api.client.util.DateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
-@Data
-@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class RecipeDTO extends BaseDTO {
-
+@SuperBuilder
+@Data
+public class ReportDTO extends BaseDTO {
     private Long accountId;
-    private String title;
+    private Long recipeId;
     private String description;
-    private Long ration;
-    private LocalTime cookingTime;
-    private boolean status;
+    private String reportStatus;
+    private String adminResponse;
+    private LocalDateTime adminResponseDate;
 }

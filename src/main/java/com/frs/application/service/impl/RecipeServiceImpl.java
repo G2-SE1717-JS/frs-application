@@ -39,6 +39,7 @@ public class RecipeServiceImpl implements IRecipeService {
                 .title(request.getTitle())
                 .ration(request.getRation())
                 .cookingTime(request.getCookingTime())
+                .status(request.isStatus())
                 .description(request.getDescription())
                 .build();
         recipeDTO = recipeLogic.save(recipeDTO);
@@ -73,6 +74,7 @@ public class RecipeServiceImpl implements IRecipeService {
                     .description(recipeDTO.getDescription())
                     .ration(recipeDTO.getRation())
                     .cookingTime(recipeDTO.getCookingTime())
+                    .status(recipeDTO.isStatus())
                     .createdDate(recipeDTO.getCreatedDate())
                     .lastModifiedDate(recipeDTO.getLastModifiedDate())
                     .steps(stepDTOS.stream().map(stepDTO -> {
@@ -101,6 +103,7 @@ public class RecipeServiceImpl implements IRecipeService {
                 .description(recipeDTO.getDescription())
                 .ration(recipeDTO.getRation())
                 .cookingTime(recipeDTO.getCookingTime())
+                .status(recipeDTO.isStatus())
                 .createdDate(recipeDTO.getCreatedDate())
                 .lastModifiedDate(recipeDTO.getLastModifiedDate())
                 .steps(stepDTOS.stream().map(stepDTO -> {
@@ -152,11 +155,44 @@ public class RecipeServiceImpl implements IRecipeService {
                     .description(recipeDTO.getDescription())
                     .ration(recipeDTO.getRation())
                     .cookingTime(recipeDTO.getCookingTime())
+                    .status(recipeDTO.isStatus())
                     .createdDate(recipeDTO.getCreatedDate())
                     .lastModifiedDate(recipeDTO.getLastModifiedDate())
                     .steps(stepDTOS.stream().map(stepDTO -> {
                         List<String> images = stepImgDTOS.stream().filter(stepImgDTO -> Objects.equals(
                                 stepImgDTO.getStepId(), stepDTO.getId())).map(StepImgDTO::getImage)
+                                .collect(Collectors.toList());
+                        return StepResponse.builder()
+                                .description(stepDTO.getDescription())
+                                .orderValue(stepDTO.getOrderValue())
+                                .stepImgs(images)
+                                .build();
+                    }).collect(Collectors.toList()))
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RecipeResponse> getRecipesByAccountIdAndStatus(String remoteUser, boolean status) {
+        AccountDTO accountDTO = accountLogic.findByUsername(remoteUser);
+        List<RecipeDTO> recipeDTOS = recipeLogic.getAllByAccountIdAndStatus(accountDTO.getId(), status);
+        return recipeDTOS.stream().map(recipeDTO -> {
+            List<StepDTO> stepDTOS = stepLogic.findAllByRecipeId(recipeDTO.getId());
+            List<StepImgDTO> stepImgDTOS = stepDTOS.stream().map(stepDTO ->
+                            stepImgLogic.findAllByStepId(stepDTO.getId())).flatMap(List::stream)
+                    .collect(Collectors.toList());
+            return RecipeResponse.builder()
+                    .id(recipeDTO.getId())
+                    .title(recipeDTO.getTitle())
+                    .description(recipeDTO.getDescription())
+                    .ration(recipeDTO.getRation())
+                    .cookingTime(recipeDTO.getCookingTime())
+                    .status(recipeDTO.isStatus())
+                    .createdDate(recipeDTO.getCreatedDate())
+                    .lastModifiedDate(recipeDTO.getLastModifiedDate())
+                    .steps(stepDTOS.stream().map(stepDTO -> {
+                        List<String> images = stepImgDTOS.stream().filter(stepImgDTO -> Objects.equals(
+                                        stepImgDTO.getStepId(), stepDTO.getId())).map(StepImgDTO::getImage)
                                 .collect(Collectors.toList());
                         return StepResponse.builder()
                                 .description(stepDTO.getDescription())

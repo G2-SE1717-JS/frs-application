@@ -67,4 +67,17 @@ public class RecipeLogicImpl implements IRecipeLogic {
         );
         return recipeDTOS.stream().map(mapper::toDto).toList();
     }
+
+    @Override
+    public List<RecipeDTO> getAllByAccountIdAndStatus(Long accountId, boolean status){
+        List<Recipe> recipeDTOS = repository.findAll(
+                (root, query, criteriaBuilder)
+                        -> criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("accountId"), accountId),
+                        criteriaBuilder.equal(root.get(("status")), status),
+                        criteriaBuilder.equal(root.get("isDeleted"), false)
+                )
+        );
+        return recipeDTOS.stream().map(mapper::toDto).toList();
+    }
 }

@@ -17,6 +17,7 @@ public class RecipeCreateRequest {
     private String title;
     private String description;
     private Long ration;
+    private boolean status;
     @JsonProperty("cooking_time")
     private LocalTime cookingTime;
     private List<StepCreateRequest> steps;

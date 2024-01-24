@@ -39,4 +39,9 @@ public class RecipeController {
         return recipeService.getAllByAccountId(req.getRemoteUser());
     }
 
+    @GetMapping("/{status}")
+    public List<RecipeResponse> getAllByAccountIdAndStatus(HttpServletRequest req, boolean status){
+        return recipeService.getRecipesByAccountIdAndStatus(req.getRemoteUser(), status);
+    }
+
 }
