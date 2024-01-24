@@ -5,9 +5,6 @@ import com.frs.application.dto.FollowAccountDTO;
 import com.frs.application.logic.IFollowAccountLogic;
 import com.frs.application.mapper.FollowAccountMapper;
 import com.frs.application.repository.FollowAccountRepository;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,13 +35,13 @@ public class FollowAccountLogicImpl implements IFollowAccountLogic {
     }
 
     @Override
-    public FollowAccountDTO getByIdAndFollowedId(Long accountId, Long followedAccountId, boolean isDeleted) {
+    public FollowAccountDTO getByIdAndFollowedId(Long accountId, Long followedAccountId) {
         FollowAccount followAccount = repository.findOne(
                 (root, query, criteriaBuilder)
                         -> criteriaBuilder.and(
                         criteriaBuilder.equal(root.get("accountId"), accountId),
                         criteriaBuilder.equal(root.get("followedAccountId"), followedAccountId),
-                        criteriaBuilder.equal(root.get("isDeleted"), isDeleted)
+                        criteriaBuilder.equal(root.get("isDeleted"), false)
                 )
         ).orElse(null);
         return mapper.toDto(followAccount);
