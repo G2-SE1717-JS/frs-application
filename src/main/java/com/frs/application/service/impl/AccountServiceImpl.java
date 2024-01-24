@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 public class AccountServiceImpl implements IAccountService {
     private final IAccountLogic accountLogic;
 
-    private final WebSecurityConfig passwordEncoder;;
     @Override
 
     public List<AccountResponse> getAll() {
@@ -48,7 +47,7 @@ public class AccountServiceImpl implements IAccountService {
         AccountDTO accountDTO = AccountDTO.builder()
                 .email(request.getEmail())
                 .username(request.getUsername())
-                .password(passwordEncoder.passwordEncoder().encode(request.getPassword()))
+                .password(request.getPassword())
                 .role(request.getRole())
                 .verified(request.isVerified())
                 .status(request.isStatus())
