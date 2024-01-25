@@ -37,7 +37,7 @@ public class ToolController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     public ResponseEntity<List<ToolResponse>> getAll() {
         return ResponseEntity.ok(iToolService.getAll());
     }

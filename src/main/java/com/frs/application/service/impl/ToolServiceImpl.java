@@ -54,7 +54,7 @@ public class ToolServiceImpl implements IToolService {
     public ToolResponse getById(Long id) {
         ToolDTO toolDTO = toolLogic.getById(id);
         if (Objects.isNull(toolLogic)) {
-            throw new SystemBadRequestException(MessageHelper.getMessage("validation.Tool.not-existed"));
+            throw new SystemBadRequestException(MessageHelper.getMessage("validation.tool.not-existed"));
         }
         return ToolResponse.builder()
                 .id(toolDTO.getId())
@@ -68,7 +68,7 @@ public class ToolServiceImpl implements IToolService {
     public ToolResponse update(Long id, ToolUpdateRequest request) {
         ToolDTO toolDTO = toolLogic.getById(id);
         if (Objects.isNull(toolDTO))
-            throw new SystemBadRequestException(MessageHelper.getMessage("validation.Tool.not-existed"));
+            throw new SystemBadRequestException(MessageHelper.getMessage("validation.tool.not-existed"));
         toolDTO = ToolDTO.builder()
                 .id(toolDTO.getId())
                 .name(request.getName())
@@ -89,7 +89,7 @@ public class ToolServiceImpl implements IToolService {
     public void delete(Long id) {
         ToolDTO toolDTO = toolLogic.getById(id);
         if (Objects.isNull(toolDTO ))
-            throw new SystemBadRequestException(MessageHelper.getMessage("validation.service.not-existed"));
+            throw new SystemBadRequestException(MessageHelper.getMessage("validation.tool.not-existed"));
 
         toolDTO.setDeleted(true);
         toolLogic.save(toolDTO);
