@@ -17,7 +17,7 @@ import java.util.List;
 public class ReportController {
     private final IReportService reportService;
 
-    @GetMapping("all-by-admin")
+    @GetMapping("admin/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<AdminReportResponse>> getAllByAdmin() {
         return ResponseEntity.ok(reportService.getAllReportByAdmin());

@@ -51,7 +51,7 @@ public class ReportServiceImpl implements IReportService {
                                 .adminResponse(reportDTO.getAdminResponse())
                                 .adminResponseDate(reportDTO.getAdminResponseDate())
                                 .build()
-                ).sorted(Comparator.comparing(AdminReportResponse::getStatus, Comparator.comparingInt(this::statusOrder))
+                ).sorted(Comparator.comparing(AdminReportResponse::getStatus, Comparator.comparingInt(ReportStatus::ordinal))
                         .thenComparing(AdminReportResponse::getCreatedDate))
                 .collect(Collectors.toList());
     }
@@ -81,18 +81,5 @@ public class ReportServiceImpl implements IReportService {
                 .adminResponse(reportDTO.getAdminResponse())
                 .adminResponseDate(reportDTO.getAdminResponseDate())
                 .build();
-    }
-
-    private int statusOrder(ReportStatus status) {
-        switch (status) {
-            case PROCESSING:
-                return 1;
-            case REJECTED:
-                return 2;
-            case APPROVED:
-                return 3;
-            default:
-                throw new IllegalArgumentException("Unexpected status: " + status);
-        }
     }
 }

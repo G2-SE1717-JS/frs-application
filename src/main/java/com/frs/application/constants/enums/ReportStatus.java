@@ -4,7 +4,4 @@ public enum ReportStatus {
     PROCESSING,
     REJECTED,
     APPROVED;
-
-    private ReportStatus() {
-    }
 }

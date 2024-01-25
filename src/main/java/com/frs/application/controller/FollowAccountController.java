@@ -18,20 +18,17 @@ public class FollowAccountController {
     private final IFollowAccountService followAccountService;
 
     @PostMapping("follow")
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<FollowAccountResponse> create(@RequestBody FollowAccountRequest request, HttpServletRequest req) {
         return ResponseEntity.ok(followAccountService.create(req.getRemoteUser(), request));
     }
 
     @DeleteMapping("unfollow")
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Void> delete(@RequestBody FollowAccountRequest request, HttpServletRequest req) {
         followAccountService.delete(req.getRemoteUser(), request);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<FollowAccountResponse>> getAll(HttpServletRequest req) {
         return ResponseEntity.ok(followAccountService.getAll(req.getRemoteUser()));
     }
