@@ -2,7 +2,6 @@ package com.frs.application.logic.impl;
 
 import com.frs.application.constants.SystemConstant;
 import com.frs.application.domain.Account;
-import com.frs.application.domain.Ingredients;
 import com.frs.application.dto.AccountDTO;
 import com.frs.application.logic.IAccountLogic;
 import com.frs.application.mapper.AccountMapper;
