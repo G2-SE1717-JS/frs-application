@@ -24,10 +24,10 @@ public class BlockAccountController {
         return ResponseEntity.ok(iBlockAccountService.getByAccountID(req.getRemoteUser()));
     }
 
-    @PostMapping("/{blockAccountId}")
+    @PostMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<BlockAccountResponse> create(@PathVariable Long blockAccountId, HttpServletRequest req) {
-        return ResponseEntity.ok(iBlockAccountService.create(blockAccountId, req.getRemoteUser()));
+    public ResponseEntity<BlockAccountResponse> create(@PathVariable Long id, HttpServletRequest req) {
+        return ResponseEntity.ok(iBlockAccountService.create(id, req.getRemoteUser()));
     }
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")

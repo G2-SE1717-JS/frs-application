@@ -34,7 +34,8 @@ public class BlockAccountLogicImpl implements IBlockAccountLogic {
                 (root, query, criteriaBuilder)
                         -> criteriaBuilder.and(
                         criteriaBuilder.equal(root.get("blockedAccountId"), blockedAccountId),
-                        criteriaBuilder.equal(root.get("accountId"), accountId)
+                        criteriaBuilder.equal(root.get("accountId"), accountId),
+                        criteriaBuilder.equal(root.get("isDeleted"), false)
                 )
                 ).orElse(null);
         return blockAccount != null;

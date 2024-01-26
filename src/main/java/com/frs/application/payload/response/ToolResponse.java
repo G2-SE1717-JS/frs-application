@@ -5,16 +5,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
-
 @Data
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BlockAccountResponse implements Serializable {
+public class ToolResponse {
     private Long id;
-    private Long blockAccountId;
-
-    private Long accountId;
+    private String name;
+    private String image;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
 }

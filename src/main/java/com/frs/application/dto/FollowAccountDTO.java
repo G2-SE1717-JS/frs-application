@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @Data
-public class BlockAccountDTO extends BaseDTO {
-    private Long blockAccountId;
+public class FollowAccountDTO extends BaseDTO {
     private Long accountId;
+    private Long followedAccountId;
 }

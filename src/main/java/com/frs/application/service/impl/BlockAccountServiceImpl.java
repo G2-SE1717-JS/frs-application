@@ -29,7 +29,7 @@ public class BlockAccountServiceImpl implements IBlockAccountService {
         return blockAccountDTOS.stream().map(
                 blockAccountDTO -> BlockAccountResponse.builder()
                         .id(blockAccountDTO.getId())
-                        .blockedAccountId(blockAccountDTO.getBlockAccountId())
+                        .blockAccountId(blockAccountDTO.getBlockAccountId())
                         .accountId(blockAccountDTO.getAccountId())
 
                         .build()
@@ -43,14 +43,12 @@ public class BlockAccountServiceImpl implements IBlockAccountService {
                 .blockAccountId(blockAccountId)
                 .build();
         if (blockAccountLogic.isAccountBlocked(blockAccountId, accountDTO.getId())) {
-            blockAccountDTO.setDeleted(true);
-        } else {
-            blockAccountDTO = blockAccountLogic.save(blockAccountDTO);
+            throw new SystemBadRequestException(MessageHelper.getMessage("validation.service.block-yourself"));
         }
         blockAccountDTO = blockAccountLogic.save(blockAccountDTO);
         return BlockAccountResponse.builder()
                 .id(blockAccountDTO.getId())
-                .blockedAccountId(blockAccountDTO.getBlockAccountId())
+                .blockAccountId(blockAccountDTO.getBlockAccountId())
                 .accountId(blockAccountDTO.getAccountId())
                 .build();
     }

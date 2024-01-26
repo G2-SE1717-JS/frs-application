@@ -12,9 +12,10 @@ import java.time.LocalDateTime;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BlockAccountResponse implements Serializable {
+public class FollowAccountResponse implements Serializable {
     private Long id;
-    private Long blockAccountId;
-
     private Long accountId;
+    private Long followedAccountId;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
 }

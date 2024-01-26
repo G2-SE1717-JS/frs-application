@@ -15,8 +15,6 @@ import java.util.List;
 public class RecipeLogicImpl implements IRecipeLogic {
     private final RecipeRepository repository;
     private final RecipeMapper mapper;
-
-
     @Override
     public RecipeDTO save(RecipeDTO recipeDTO) {
         Recipe recipe = mapper.toEntity(recipeDTO);
@@ -34,7 +32,6 @@ public class RecipeLogicImpl implements IRecipeLogic {
             ).orElse(null);
             return mapper.toDto(recipe);
     }
-
     @Override
     public RecipeDTO findByName(String name) {
         Recipe recipe = repository.findOne(
@@ -46,7 +43,6 @@ public class RecipeLogicImpl implements IRecipeLogic {
         ).orElse(null);
         return mapper.toDto(recipe);
     }
-
     @Override
     public List<RecipeDTO> findAll() {
         List<Recipe> recipeDTOS = repository.findAll(

@@ -28,18 +28,30 @@ public class ReportLogicImpl implements IReportLogic {
         return reportDTOS.stream().map(mapper::toDto).toList();
     }
 
-
+    public List<ReportDTO> getAllReportByAdmin() {
+        List<Report> reportDTOs = repository.findAll(
+                (root, query, criteriaBuilder)
+                        -> criteriaBuilder.equal(root.get("isDeleted"), false)
+        );
+        return reportDTOs.stream().map(mapper::toDto).toList();
+    }
 
     @Override
-    public ReportDTO save(ReportDTO blockAccountDTO) {
-        Report report = mapper.toEntity(blockAccountDTO);
+    public ReportDTO save(ReportDTO reportDTO) {
+        Report report = mapper.toEntity(reportDTO);
         report = repository.save(report);
         return mapper.toDto(report);
     }
 
     @Override
     public ReportDTO getById(Long id) {
-        Report report = repository.findById(id).orElse(null);
+        Report report = repository.findOne(
+                (root, query, criteriaBuilder)
+                        -> criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("id"), id),
+                        criteriaBuilder.equal(root.get("isDeleted"), false)
+                )
+        ).orElse(null);
         return mapper.toDto(report);
     }
 }

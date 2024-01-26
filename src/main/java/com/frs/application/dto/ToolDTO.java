@@ -5,10 +5,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
-@EqualsAndHashCode(callSuper = true)
 @SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class BlockAccountDTO extends BaseDTO {
-    private Long blockAccountId;
-    private Long accountId;
+public class ToolDTO extends BaseDTO {
+    private String name;
+    private String image;
 }
