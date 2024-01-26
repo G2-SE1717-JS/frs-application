@@ -42,7 +42,7 @@ public class ReportServiceImpl implements IReportService {
                         .isDeleted(reportDTO.isDeleted())
                         .createdDate(reportDTO.getCreatedDate())
                         .lastModifiedDate(reportDTO.getLastModifiedDate())
-                        .status(reportDTO.getStatus())
+                        .reportStatus(reportDTO.getReportStatus())
                         .build()
         ).collect(Collectors.toList());
     }
@@ -54,6 +54,7 @@ public class ReportServiceImpl implements IReportService {
                 .accountId(accountDTO.getId())
                 .recipeId(request.getRecipeId())
                 .description(request.getDescription())
+                .reportStatus(request.getStatus())
                 .build();
         reportDTO = reportLogic.save(reportDTO);
         return ReportResponse.builder()
@@ -64,7 +65,7 @@ public class ReportServiceImpl implements IReportService {
                 .isDeleted(reportDTO.isDeleted())
                 .createdDate(reportDTO.getCreatedDate())
                 .lastModifiedDate(reportDTO.getLastModifiedDate())
-                .status(reportDTO.getStatus())
+                .reportStatus(reportDTO.getReportStatus())
                 .build();
     }
 
@@ -84,7 +85,7 @@ public class ReportServiceImpl implements IReportService {
                 .isDeleted(reportDTO.isDeleted())
                 .createdDate(reportDTO.getCreatedDate())
                 .lastModifiedDate(reportDTO.getLastModifiedDate())
-                .status(reportDTO.getStatus())
+                .reportStatus(reportDTO.getReportStatus())
                 .build();
     }
         @Override
@@ -98,7 +99,7 @@ public class ReportServiceImpl implements IReportService {
                                     .description(reportDTO.getDescription())
                                     .createdDate(reportDTO.getCreatedDate())
                                     .lastModifiedDate(reportDTO.getLastModifiedDate())
-                                    .status(reportDTO.getStatus())
+                                    .status(reportDTO.getReportStatus())
                                     .adminResponse(reportDTO.getAdminResponse())
                                     .adminResponseDate(reportDTO.getAdminResponseDate())
                                     .build()
@@ -113,7 +114,7 @@ public class ReportServiceImpl implements IReportService {
             if (Objects.isNull(reportDTO)) {
                 throw new SystemBadRequestException(MessageHelper.getMessage("report.not.found"));
             }
-            reportDTO.setStatus(request.getStatus());
+            reportDTO.setReportStatus(request.getStatus());
             reportDTO.setAdminResponse(request.getAdminResponse());
             reportDTO.setAdminResponseDate(request.getAdminResponseDate());
             reportLogic.save(reportDTO);
@@ -128,7 +129,7 @@ public class ReportServiceImpl implements IReportService {
                     .description(reportDTO.getDescription())
                     .createdDate(reportDTO.getCreatedDate())
                     .lastModifiedDate(reportDTO.getLastModifiedDate())
-                    .status(reportDTO.getStatus())
+                    .status(reportDTO.getReportStatus())
                     .adminResponse(reportDTO.getAdminResponse())
                     .adminResponseDate(reportDTO.getAdminResponseDate())
                     .build();

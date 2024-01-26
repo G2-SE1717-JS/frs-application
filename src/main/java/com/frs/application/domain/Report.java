@@ -24,7 +24,7 @@ public class Report extends BaseDomain {
     private Long recipeId;
     private String description;
     @Enumerated(EnumType.STRING)
-    private ReportStatus status;
+    private ReportStatus reportStatus;
     private String adminResponse;
     private LocalDateTime adminResponseDate;
 }

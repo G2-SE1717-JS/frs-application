@@ -20,6 +20,6 @@ public class ReportResponse {
     private boolean isDeleted;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
-    private ReportStatus status;
+    private ReportStatus reportStatus;
 
 }

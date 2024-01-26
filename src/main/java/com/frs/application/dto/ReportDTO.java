@@ -16,7 +16,7 @@ public class ReportDTO extends BaseDTO {
     private Long accountId;
     private Long recipeId;
     private String description;
-    private ReportStatus status;
+    private ReportStatus reportStatus;
     private String adminResponse;
     private LocalDateTime adminResponseDate;
 }

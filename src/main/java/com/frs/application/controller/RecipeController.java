@@ -6,6 +6,7 @@ import com.frs.application.payload.response.RecipeResponse;
 import com.frs.application.service.IRecipeService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,8 +40,9 @@ public class RecipeController {
         return recipeService.getAllByAccountId(req.getRemoteUser());
     }
 
-    @GetMapping("/{status}")
-    public List<RecipeResponse> getAllByAccountIdAndStatus(HttpServletRequest req, boolean status){
+    @GetMapping("/getByStatus")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public List<RecipeResponse> getAllByAccountIdAndStatus(HttpServletRequest req, @RequestBody boolean status){
         return recipeService.getRecipesByAccountIdAndStatus(req.getRemoteUser(), status);
     }
 

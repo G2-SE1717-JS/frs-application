@@ -1,5 +1,5 @@
 package com.frs.application.payload.request.report;
-import com.frs.core.constants.enums.UserRole;
+import com.frs.application.constants.enums.ReportStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 public class ReportCreateRequest {
     private Long recipeId;
     private String description;
+    private ReportStatus status;
 
 }
 
