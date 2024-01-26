@@ -1,30 +1,23 @@
 package com.frs.application.domain;
 
 import com.frs.core.base.BaseDomain;
-import com.frs.application.constants.enums.ReportStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 
-@Table(name = "report")
+@Table(name = "follow_account")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
-public class Report extends BaseDomain {
+public class FollowAccount extends BaseDomain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long accountId;
-    private Long recipeId;
-    private String description;
-    @Enumerated(EnumType.STRING)
-    private ReportStatus status;
-    private String adminResponse;
-    private LocalDateTime adminResponseDate;
+    private Long followedAccountId;
 }
