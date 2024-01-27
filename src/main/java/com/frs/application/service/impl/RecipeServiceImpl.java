@@ -1,15 +1,11 @@
 package com.frs.application.service.impl;
 
 import com.frs.application.dto.*;
-import com.frs.application.logic.IAccountLogic;
-import com.frs.application.logic.IRecipeLogic;
-import com.frs.application.logic.IStepImgLogic;
-import com.frs.application.logic.IStepLogic;
+import com.frs.application.logic.*;
 import com.frs.application.payload.request.recipe.RecipeCreateRequest;
 import com.frs.application.payload.request.recipe.RecipeUpdateRequest;
 import com.frs.application.payload.request.step.StepCreateRequest;
-import com.frs.application.payload.response.RecipeResponse;
-import com.frs.application.payload.response.StepResponse;
+import com.frs.application.payload.response.*;
 import com.frs.application.service.IRecipeService;
 import com.frs.core.exceptions.SystemBadRequestException;
 import com.frs.core.helpers.MessageHelper;
@@ -29,6 +25,11 @@ public class RecipeServiceImpl implements IRecipeService {
     private final IStepLogic stepLogic;
     private final IStepImgLogic stepImgLogic;
     private final IAccountLogic accountLogic;
+    private final IRecipeImgLogic recipeImgLogic;
+    private final IIngredientsLogic ingredientLogic;
+    private final ICommentRecipeLogic commentLogic;
+
+    private final IIngreRecipeLogic ingreRecipeLogic;
 
     @Override
     public List<RecipeResponse> create(RecipeCreateRequest request, String remoteUser) {
@@ -175,6 +176,107 @@ public class RecipeServiceImpl implements IRecipeService {
         }
         recipeDTO.setDeleted(true);
         recipeLogic.save(recipeDTO);
-}
+    }
+
+    @Override
+    public RecipeResponse getRecipeDetails(Long id) {
+        RecipeDTO recipeDTO = recipeLogic.getById(id);
+//        DONE: RECIPE IMAGES, Get account of recipe
+        List<RecipeImgDTO> recipeImgDTOS = recipeImgLogic.getAllByRecipeId(id);
+
+        Long accountId = recipeLogic.getAccountIdByRecipeId(id);
+        AccountDTO accountDTO = accountLogic.getById(accountId);
+
+//        TODO: RECIPE NAME, INGREDIENTS, STEPS, COMMENTS, getRecipeByAccountId (Recommend)
+
+
+//        Get ingredients of recipe
+//        Have to update fields: quantity, unit of measurement
+        List<IngreRecipeDTO> ingreRecipeDTOS = ingreRecipeLogic.getAllByRecipeId(id);
+        List<IngredientsDTO> ingredientDTOS = ingreRecipeDTOS.stream()
+                .map(ingreRecipeDTO -> ingredientLogic.getById(ingreRecipeDTO.getIngredientsId()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+//        Get steps of recipe & images of steps
+        List<StepDTO> stepDTOS = stepLogic.findAllByRecipeId(recipeDTO.getId());
+        List<StepImgDTO> stepImgDTOS = stepDTOS.stream().map(stepDTO ->
+                        stepImgLogic.findAllByStepId(stepDTO.getId())).flatMap(List::stream)
+                .collect(Collectors.toList());
+
+//        Get comments of recipe
+        List<CommentRecipeDTO> commentDTOS = commentLogic.getAllByRecipeId(id);
+
+//        Get recommended recipes by the same author
+
+        return RecipeResponse.builder()
+                .id(recipeDTO.getId())
+                .recipeImgResposes(recipeImgDTOS.stream().map(recipeImgDTO -> {
+                    return RecipeImgRespose.builder()
+                            .id(recipeImgDTO.getId())
+                            .image(recipeImgDTO.getImage())
+                            .recipeId(recipeImgDTO.getRecipeId())
+                            .build();
+                }).collect(Collectors.toList()))
+                .title(recipeDTO.getTitle())
+                .description(recipeDTO.getDescription())
+                .username(accountDTO.getUsername())
+                .ration(recipeDTO.getRation())
+                .cookingTime(recipeDTO.getCookingTime())
+                .ingredientsResponses(ingredientDTOS.stream().map(ingredientDTO -> {
+                    return IngredientsResponse.builder()
+                            .id(ingredientDTO.getId())
+                            .name(ingredientDTO.getName())
+                            .image(ingredientDTO.getImage())
+                            .build();
+                }).collect(Collectors.toList()))
+                .createdDate(recipeDTO.getCreatedDate())
+                .lastModifiedDate(recipeDTO.getLastModifiedDate())
+                .steps(stepDTOS.stream().map(stepDTO -> {
+                    List<String> images = stepImgDTOS.stream().filter(stepImgDTO -> Objects.equals(
+                                    stepImgDTO.getStepId(), stepDTO.getId())).map(StepImgDTO::getImage)
+                            .collect(Collectors.toList());
+                    return StepResponse.builder()
+                            .description(stepDTO.getDescription())
+                            .orderValue(stepDTO.getOrderValue())
+                            .stepImgs(images)
+                            .build();
+                }).collect(Collectors.toList()))
+               /* .stepImgResponses(stepImgDTOS.stream().map(stepImgDTO -> {
+                    return StepImgResponse.builder()
+                            .id(stepImgDTO.getId())
+                            .image(stepImgDTO.getImage())
+                            .stepId(stepImgDTO.getStepId())
+                            .build();
+                }).collect(Collectors.toList()))*/
+                .commentRecipeResponses(commentDTOS.stream().map(commentDTO -> {
+                    AccountDTO account = accountLogic.getById(commentDTO.getAccountId());
+                    return CommentRecipeResponse.builder()
+                            .id(commentDTO.getId())
+                            .accountId(commentDTO.getAccountId())
+                            .recipeId(commentDTO.getRecipeId())
+                            .parentId(commentDTO.getParentId())
+                            .description(commentDTO.getDescription())
+                            .createdDate(commentDTO.getCreatedDate())
+                            .lastModifiedDate(commentDTO.getLastModifiedDate())
+                            .build();
+                }).collect(Collectors.toList())).build();
+                /*.recommendedRecipesResponses(recommendedRecipeDTOS.stream().map(recommendedDTO -> {
+                    return RecommendedRecipesResponse.builder()
+                            .id(recommendedDTO.getId())
+                            .title(recommendedDTO.getTitle())
+                            .recipeImgResposes(recipeImgDTOS.stream().map(recipeImgDTO -> {
+                                return RecipeImgRespose.builder()
+                                        .id(recipeImgDTO.getId())
+                                        .image(recipeImgDTO.getImage())
+                                        .recipeId(recipeImgDTO.getRecipeId())
+                                        .build();
+                            }).collect(Collectors.toList()))
+                            .build();
+                }));*/
+    }
 
 }
+
+
+

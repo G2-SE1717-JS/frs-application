@@ -14,6 +14,10 @@ public interface IRecipeLogic extends BaseLogic<RecipeDTO, Long> {
 
     List<RecipeDTO> getAllByAccountId(Long accountId);
 
+    Long getAccountIdByRecipeId(Long recipeId);
 
+//    RecipeDTO getNameById(Long id);
+
+//    String getNameById(Long id);
 
 }
