@@ -4,7 +4,7 @@ import com.frs.application.domain.Category;
 import com.frs.application.dto.CategoryDTO;
 import com.frs.application.logic.ICategoryLogic;
 import com.frs.application.mapper.CategoryMapper;
-import com.frs.application.repository.CategoryRespsitory;
+import com.frs.application.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +13,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CategoryImpl implements ICategoryLogic {
-    private final CategoryRespsitory respsitory;
+    private final CategoryRepository repository;
     private final CategoryMapper mapper;
 
     @Override
     public CategoryDTO findByName(String name) {
-        Category category = respsitory.findOne(
+        Category category = repository.findOne(
                 (root, query, criteriaBuilder)
                         -> criteriaBuilder.and(
                         criteriaBuilder.equal(root.get("name"), name),
@@ -30,7 +30,7 @@ public class CategoryImpl implements ICategoryLogic {
 
     @Override
     public List<CategoryDTO> findAll() {
-        List<Category> categories = respsitory.findAll(
+        List<Category> categories = repository.findAll(
                 (root, query, criteriaBuilder)
                         -> criteriaBuilder.equal(root.get("isDeleted"), false)
         );
@@ -40,13 +40,13 @@ public class CategoryImpl implements ICategoryLogic {
     @Override
     public CategoryDTO save(CategoryDTO categoryDTO) {
         Category category = mapper.toEntity(categoryDTO);
-        category = respsitory.save(category);
+        category = repository.save(category);
         return mapper.toDto(category);
     }
 
     @Override
     public CategoryDTO getById(Long aLong) {
-        Category category = respsitory.findOne(
+        Category category = repository.findOne(
                 (root, query, criteriaBuilder)
                         -> criteriaBuilder.and(
                         criteriaBuilder.equal(root.get("id"), aLong),
