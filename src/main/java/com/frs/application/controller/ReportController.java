@@ -23,7 +23,7 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getAllReportByAdmin());
     }
 
-    @PutMapping("{id}")
+    @PutMapping("admin/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<AdminReportResponse> updateComment(@PathVariable Long id, @RequestBody AdminCommentRequest request) {
         return ResponseEntity.ok(reportService.updateComment(id, request));

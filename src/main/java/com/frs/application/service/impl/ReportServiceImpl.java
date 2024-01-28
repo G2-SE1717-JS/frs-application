@@ -24,6 +24,7 @@ import com.frs.core.helpers.MessageHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -47,11 +48,11 @@ public class ReportServiceImpl implements IReportService {
                                 .description(reportDTO.getDescription())
                                 .createdDate(reportDTO.getCreatedDate())
                                 .lastModifiedDate(reportDTO.getLastModifiedDate())
-                                .status(reportDTO.getStatus())
+                                .reportStatus(reportDTO.getReportStatus())
                                 .adminResponse(reportDTO.getAdminResponse())
                                 .adminResponseDate(reportDTO.getAdminResponseDate())
                                 .build()
-                ).sorted(Comparator.comparing(AdminReportResponse::getStatus, Comparator.comparingInt(ReportStatus::ordinal))
+                ).sorted(Comparator.comparing(AdminReportResponse::getReportStatus, Comparator.comparingInt(ReportStatus::ordinal))
                         .thenComparing(AdminReportResponse::getCreatedDate))
                 .collect(Collectors.toList());
     }
@@ -62,12 +63,13 @@ public class ReportServiceImpl implements IReportService {
         if (Objects.isNull(reportDTO)) {
             throw new SystemBadRequestException(MessageHelper.getMessage("report.not.found"));
         }
-        reportDTO.setStatus(request.getStatus());
+
+        reportDTO.setReportStatus(request.getReportStatus());
         reportDTO.setAdminResponse(request.getAdminResponse());
-        reportDTO.setAdminResponseDate(request.getAdminResponseDate());
+        reportDTO.setAdminResponseDate(LocalDateTime.now());
         reportLogic.save(reportDTO);
 
-        if (request.getStatus().equals(ReportStatus.APPROVED)) {
+        if (request.getReportStatus().equals(ReportStatus.APPROVED)) {
             recipeService.delete(reportDTO.getRecipeId());
         }
         return AdminReportResponse.builder()
@@ -77,7 +79,7 @@ public class ReportServiceImpl implements IReportService {
                 .description(reportDTO.getDescription())
                 .createdDate(reportDTO.getCreatedDate())
                 .lastModifiedDate(reportDTO.getLastModifiedDate())
-                .status(reportDTO.getStatus())
+                .reportStatus(reportDTO.getReportStatus())
                 .adminResponse(reportDTO.getAdminResponse())
                 .adminResponseDate(reportDTO.getAdminResponseDate())
                 .build();

@@ -16,7 +16,7 @@ public class ReportMapper {
                 .isDeleted(entity.isDeleted())
                 .createdDate(entity.getCreatedDate())
                 .lastModifiedDate(entity.getLastModifiedDate())
-                .status(entity.getStatus())
+                .reportStatus(entity.getReportStatus())
                 .adminResponse(entity.getAdminResponse())
                 .adminResponseDate(entity.getAdminResponseDate())
                 .build();
@@ -32,7 +32,7 @@ public class ReportMapper {
         entity.setDeleted(dto.isDeleted());
         entity.setCreatedDate(dto.getCreatedDate());
         entity.setLastModifiedDate(dto.getLastModifiedDate());
-        entity.setStatus(dto.getStatus());
+        entity.setReportStatus(dto.getReportStatus());
         entity.setAdminResponse(dto.getAdminResponse());
         entity.setAdminResponseDate(dto.getAdminResponseDate());
         return entity;

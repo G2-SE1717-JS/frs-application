@@ -4,14 +4,10 @@ import com.frs.application.constants.enums.ReportStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 
 @Data
 @NoArgsConstructor
 public class AdminCommentRequest {
-    private Long recipeId;
-    private ReportStatus status;
+    private ReportStatus reportStatus;
     private String adminResponse;
-    private LocalDateTime adminResponseDate;
 }
