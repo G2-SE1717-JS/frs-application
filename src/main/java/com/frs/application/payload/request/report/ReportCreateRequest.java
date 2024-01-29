@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 public class ReportCreateRequest {
     private Long recipeId;
     private String description;
-    private ReportStatus status;
 
 }

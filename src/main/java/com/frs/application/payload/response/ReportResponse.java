@@ -1,4 +1,4 @@
-package com.frs.application.payload.response.report;
+package com.frs.application.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,9 +17,10 @@ public class ReportResponse {
     private Long accountId;
     private Long recipeId;
     private String description;
-    private boolean isDeleted;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
-    private ReportStatus status;
+    private ReportStatus reportStatus;
+    private String adminResponse;
+    private LocalDateTime adminResponseDate;
 
 }

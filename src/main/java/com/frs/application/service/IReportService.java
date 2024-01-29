@@ -2,21 +2,18 @@ package com.frs.application.service;
 
 import com.frs.application.payload.request.report.AdminCommentRequest;
 import com.frs.application.payload.request.report.ReportCreateRequest;
-import com.frs.application.payload.response.report.AdminReportResponse;
-import com.frs.application.payload.response.report.ReportResponse;
+import com.frs.application.payload.response.ReportResponse;
 
 import java.util.List;
 
 public interface IReportService {
-    List<ReportResponse> getByAccountID(String remoteUser);
-
     ReportResponse create(String remoteUser, ReportCreateRequest request);
 
     ReportResponse update(Long id, String description);
 
-    List<AdminReportResponse> getAllReportByAdmin();
+    List<ReportResponse> getAllReport(String remoteUser);
 
-    AdminReportResponse updateComment(Long reportId, AdminCommentRequest request);
+    ReportResponse addComment(Long reportId, AdminCommentRequest request);
 
     void delete(Long id);
 }

@@ -17,7 +17,7 @@ public class ReportLogicImpl implements IReportLogic {
     private final ReportMapper mapper;
 
     @Override
-    public List<ReportDTO> findByAccountId(Long accountId) {
+    public List<ReportDTO> getAllReportByUser(Long accountId) {
         List<Report> reportDTOS = repository.findAll(
                 (root, query, criteriaBuilder)
                         -> criteriaBuilder.and(
