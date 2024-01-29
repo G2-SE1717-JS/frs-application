@@ -43,7 +43,7 @@ public class BlockAccountServiceImpl implements IBlockAccountService {
                 .blockAccountId(blockAccountId)
                 .build();
         if (blockAccountLogic.isAccountBlocked(blockAccountId, accountDTO.getId())) {
-            throw new SystemBadRequestException(MessageHelper.getMessage("validation.service.block-yourself"));
+            throw new SystemBadRequestException(MessageHelper.getMessage("validation.service.existed"));
         }
         blockAccountDTO = blockAccountLogic.save(blockAccountDTO);
         return BlockAccountResponse.builder()
