@@ -25,20 +25,6 @@ public class ReportResponse {
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
     private ReportStatus reportStatus;
-    @JsonSerialize(using = ConditionalNullSerializer.class)
     private String adminResponse;
-    @JsonSerialize(using = ConditionalNullSerializer.class)
     private LocalDateTime adminResponseDate;
-
-    public static class ConditionalNullSerializer extends JsonSerializer<Object> {
-        @Override
-        public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            if (value != null) {
-                gen.writeObject(value);
-            } else {
-                gen.writeNull();
-            }
-        }
-    }
-
 }

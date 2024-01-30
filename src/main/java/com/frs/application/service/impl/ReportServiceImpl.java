@@ -36,7 +36,7 @@ public class ReportServiceImpl implements IReportService {
         if (Objects.isNull(accountDTO)) {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.account.not-existed"));
         }
-        List<ReportDTO> reportDTOs = accountDTO.getRole().equals(UserRole.ROLE_ADMIN) ?
+        List<ReportDTO> reportDTOs = UserRole.ROLE_ADMIN.equals(accountDTO.getRole()) ?
                 reportLogic.getAllReportByAdmin() : reportLogic.getAllReportByUser(accountDTO.getId());
 
         return reportDTOs.stream().map(
@@ -89,8 +89,8 @@ public class ReportServiceImpl implements IReportService {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.report.not.found"));
         }
 
-        if (reportDTO.getReportStatus().equals(ReportStatus.APPROVED) || reportDTO.getReportStatus().equals(ReportStatus.REJECTED)) {
-            throw new SystemBadRequestException("Cannot update a report that has been approved or rejected");
+        if (ReportStatus.APPROVED.equals(reportDTO.getReportStatus()) || ReportStatus.REJECTED.equals(reportDTO.getReportStatus())) {
+            throw new SystemBadRequestException(MessageHelper.getMessage("validation.report.status.not.processing"));
         }
 
         reportDTO.setDescription(request.getDescription());
@@ -100,7 +100,7 @@ public class ReportServiceImpl implements IReportService {
         reportDTO.setAdminResponse(request.getAdminCommentRequest().getAdminResponse());
         reportDTO.setAdminResponseDate(LocalDateTime.now());
 
-        if (request.getAdminCommentRequest().getReportStatus().equals(ReportStatus.APPROVED)) {
+        if (ReportStatus.APPROVED.equals(request.getAdminCommentRequest().getReportStatus())) {
             recipeService.delete(reportDTO.getRecipeId());
         }
         reportLogic.save(reportDTO);

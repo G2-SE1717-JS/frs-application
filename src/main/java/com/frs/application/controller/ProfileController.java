@@ -36,6 +36,7 @@ public class ProfileController {
         iUserProfileService.delete(req.getRemoteUser());
         return ResponseEntity.ok().build();
     }
+
     @GetMapping("/id")
     public ResponseEntity<UserProfileResponse> getAnUser(@PathVariable Long id) {
         return ResponseEntity.ok(iUserProfileService.getById(id));

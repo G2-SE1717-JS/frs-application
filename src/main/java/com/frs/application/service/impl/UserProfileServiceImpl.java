@@ -97,4 +97,28 @@ public class UserProfileServiceImpl implements IUserProfileService {
                 .lastModifiedDate(userProfileDTO.getLastModifiedDate())
                 .build();
     }
+
+    @Override
+    public UserProfileResponse getMe(String remoteUser) {
+        AccountDTO accountDTO = accountLogic.findByUsername(remoteUser);
+        if (Objects.isNull(accountDTO)) {
+            throw new SystemBadRequestException(MessageHelper.getMessage("validation.account.not-existed"));
+        }
+
+        UserProfileDTO userProfileDTO = profileLogic.getById(accountDTO.getId());
+
+        if (Objects.isNull(userProfileDTO)) {
+            throw new SystemBadRequestException(MessageHelper.getMessage("validation.user.not-existed"));
+        }
+        return UserProfileResponse.builder()
+                .id(userProfileDTO.getId())
+                .accountId(userProfileDTO.getAccountId())
+                .fullName(userProfileDTO.getFullName())
+                .biography(userProfileDTO.getBiography())
+                .origin(userProfileDTO.getOrigin())
+                .profilePicture(userProfileDTO.getProfilePicture())
+                .createdDate(userProfileDTO.getCreatedDate())
+                .lastModifiedDate(userProfileDTO.getLastModifiedDate())
+                .build();
+    }
 }

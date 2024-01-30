@@ -9,4 +9,5 @@ public interface IUserProfileService {
     UserProfileResponse getById(Long id);
     UserProfileResponse update(String remoteUser, ProfileUpdateRequest request);
     void delete (String remoteUser);
+    UserProfileResponse getMe(String remoteUser);
 }
