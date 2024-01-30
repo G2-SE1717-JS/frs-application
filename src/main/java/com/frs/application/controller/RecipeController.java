@@ -38,5 +38,9 @@ public class RecipeController {
     public List<RecipeResponse> getAllByAccountId(HttpServletRequest req){
         return recipeService.getAllByAccountId(req.getRemoteUser());
     }
+    @GetMapping("/search/{title}")
+    public List<RecipeResponse> findByTitle(@PathVariable String title){
+        return recipeService.findByTitle(title);
+    }
 
 }

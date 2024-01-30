@@ -13,7 +13,7 @@ public interface IRecipeLogic extends BaseLogic<RecipeDTO, Long> {
     List<RecipeDTO> findAll();
 
     List<RecipeDTO> getAllByAccountId(Long accountId);
-
+    List<RecipeDTO> findByTitle(String title);
 
 
 }
