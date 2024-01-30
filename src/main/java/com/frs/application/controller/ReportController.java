@@ -2,6 +2,7 @@ package com.frs.application.controller;
 
 import com.frs.application.payload.request.report.AdminCommentRequest;
 import com.frs.application.payload.request.report.ReportCreateRequest;
+import com.frs.application.payload.request.report.ReportUpdateRequest;
 import com.frs.application.payload.response.ReportResponse;
 import com.frs.application.service.IReportService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,9 +32,8 @@ public class ReportController {
     }
 
     @PutMapping("{id}")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<ReportResponse> update(@PathVariable Long id, @RequestBody String description) {
-        return ResponseEntity.ok(reportService.update(id, description));
+    public ResponseEntity<ReportResponse> update(@PathVariable Long id, @RequestBody @Valid ReportUpdateRequest request) {
+        return ResponseEntity.ok(reportService.updateAndAddComment(id, request));
     }
 
     @DeleteMapping("{id}")
@@ -42,12 +42,4 @@ public class ReportController {
         reportService.delete(id);
         return ResponseEntity.ok().build();
     }
-
-    @PutMapping("response/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ReportResponse> addComment(@PathVariable Long id, @RequestBody AdminCommentRequest request) {
-        return ResponseEntity.ok(reportService.addComment(id, request));
-    }
-
-
 }

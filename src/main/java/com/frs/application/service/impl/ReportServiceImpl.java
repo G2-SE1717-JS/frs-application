@@ -6,6 +6,7 @@ import com.frs.application.logic.IAccountLogic;
 import com.frs.application.logic.IReportLogic;
 import com.frs.application.payload.request.report.AdminCommentRequest;
 import com.frs.application.payload.request.report.ReportCreateRequest;
+import com.frs.application.payload.request.report.ReportUpdateRequest;
 import com.frs.application.payload.response.ReportResponse;
 import com.frs.application.service.IRecipeService;
 import com.frs.application.service.IReportService;
@@ -82,43 +83,27 @@ public class ReportServiceImpl implements IReportService {
     }
 
     @Override
-    public ReportResponse update(Long id, String description) {
+    public ReportResponse updateAndAddComment(Long id, ReportUpdateRequest request) {
         ReportDTO reportDTO = reportLogic.getById(id);
         if (Objects.isNull(reportDTO)) {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.report.not.found"));
         }
-        reportDTO.setDescription(description);
-        reportDTO = reportLogic.save(reportDTO);
-        return ReportResponse.builder()
-                .id(reportDTO.getId())
-                .accountId(reportDTO.getAccountId())
-                .recipeId(reportDTO.getRecipeId())
-                .description(reportDTO.getDescription())
-                .createdDate(reportDTO.getCreatedDate())
-                .lastModifiedDate(reportDTO.getLastModifiedDate())
-                .reportStatus(reportDTO.getReportStatus())
-                .adminResponse(reportDTO.getAdminResponse())
-                .adminResponseDate(reportDTO.getAdminResponseDate())
-                .build();
-    }
 
-
-
-    @Override
-    public ReportResponse addComment(Long reportId, AdminCommentRequest request) {
-        ReportDTO reportDTO = reportLogic.getById(reportId);
-        if (Objects.isNull(reportDTO)) {
-            throw new SystemBadRequestException(MessageHelper.getMessage("validation.report.not.found"));
+        if (reportDTO.getReportStatus().equals(ReportStatus.APPROVED) || reportDTO.getReportStatus().equals(ReportStatus.REJECTED)) {
+            throw new SystemBadRequestException("Cannot update a report that has been approved or rejected");
         }
 
-        reportDTO.setReportStatus(request.getReportStatus());
-        reportDTO.setAdminResponse(request.getAdminResponse());
-        reportDTO.setAdminResponseDate(LocalDateTime.now());
-        reportLogic.save(reportDTO);
+        reportDTO.setDescription(request.getDescription());
+        reportDTO = reportLogic.save(reportDTO);
 
-        if (request.getReportStatus().equals(ReportStatus.APPROVED)) {
+        reportDTO.setReportStatus(request.getAdminCommentRequest().getReportStatus());
+        reportDTO.setAdminResponse(request.getAdminCommentRequest().getAdminResponse());
+        reportDTO.setAdminResponseDate(LocalDateTime.now());
+
+        if (request.getAdminCommentRequest().getReportStatus().equals(ReportStatus.APPROVED)) {
             recipeService.delete(reportDTO.getRecipeId());
         }
+        reportLogic.save(reportDTO);
         return ReportResponse.builder()
                 .id(reportDTO.getId())
                 .accountId(reportDTO.getAccountId())
@@ -131,6 +116,7 @@ public class ReportServiceImpl implements IReportService {
                 .adminResponseDate(reportDTO.getAdminResponseDate())
                 .build();
     }
+
     @Override
     public void delete (Long id){
         ReportDTO reportDTO = reportLogic.getById(id);
