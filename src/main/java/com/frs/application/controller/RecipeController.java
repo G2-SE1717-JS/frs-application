@@ -52,7 +52,7 @@ public class RecipeController {
     public Long getAccountIdByRecipeId(@RequestParam Long recipeId){
         return recipeService.getAccountIdByRecipeId(recipeId);}*/
 
-    @GetMapping("/viewDetails/{id}")
+    @GetMapping("/recipeDetails/{id}")
     public RecipeResponse getRecipeDetails(@PathVariable Long id){
         return recipeService.getRecipeDetails(id);
     }

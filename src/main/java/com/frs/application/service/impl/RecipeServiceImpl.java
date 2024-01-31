@@ -181,34 +181,20 @@ public class RecipeServiceImpl implements IRecipeService {
     @Override
     public RecipeResponse getRecipeDetails(Long id) {
         RecipeDTO recipeDTO = recipeLogic.getById(id);
-//        DONE: RECIPE IMAGES, Get account of recipe
         List<RecipeImgDTO> recipeImgDTOS = recipeImgLogic.getAllByRecipeId(id);
 
         Long accountId = recipeLogic.getAccountIdByRecipeId(id);
         AccountDTO accountDTO = accountLogic.getById(accountId);
-
-//        TODO: RECIPE NAME, INGREDIENTS, STEPS, COMMENTS, getRecipeByAccountId (Recommend)
-
-
-//        Get ingredients of recipe
-//        Have to update fields: quantity, unit of measurement
         List<IngreRecipeDTO> ingreRecipeDTOS = ingreRecipeLogic.getAllByRecipeId(id);
         List<IngredientsDTO> ingredientDTOS = ingreRecipeDTOS.stream()
                 .map(ingreRecipeDTO -> ingredientLogic.getById(ingreRecipeDTO.getIngredientsId()))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-
-//        Get steps of recipe & images of steps
         List<StepDTO> stepDTOS = stepLogic.findAllByRecipeId(recipeDTO.getId());
         List<StepImgDTO> stepImgDTOS = stepDTOS.stream().map(stepDTO ->
                         stepImgLogic.findAllByStepId(stepDTO.getId())).flatMap(List::stream)
                 .collect(Collectors.toList());
-
-//        Get comments of recipe
         List<CommentRecipeDTO> commentDTOS = commentLogic.getAllByRecipeId(id);
-
-//        Get recommended recipes by the same author
-
         return RecipeResponse.builder()
                 .id(recipeDTO.getId())
                 .recipeImgResposes(recipeImgDTOS.stream().map(recipeImgDTO -> {
@@ -242,13 +228,6 @@ public class RecipeServiceImpl implements IRecipeService {
                             .stepImgs(images)
                             .build();
                 }).collect(Collectors.toList()))
-               /* .stepImgResponses(stepImgDTOS.stream().map(stepImgDTO -> {
-                    return StepImgResponse.builder()
-                            .id(stepImgDTO.getId())
-                            .image(stepImgDTO.getImage())
-                            .stepId(stepImgDTO.getStepId())
-                            .build();
-                }).collect(Collectors.toList()))*/
                 .commentRecipeResponses(commentDTOS.stream().map(commentDTO -> {
                     AccountDTO account = accountLogic.getById(commentDTO.getAccountId());
                     return CommentRecipeResponse.builder()
@@ -261,22 +240,12 @@ public class RecipeServiceImpl implements IRecipeService {
                             .lastModifiedDate(commentDTO.getLastModifiedDate())
                             .build();
                 }).collect(Collectors.toList())).build();
-                /*.recommendedRecipesResponses(recommendedRecipeDTOS.stream().map(recommendedDTO -> {
-                    return RecommendedRecipesResponse.builder()
-                            .id(recommendedDTO.getId())
-                            .title(recommendedDTO.getTitle())
-                            .recipeImgResposes(recipeImgDTOS.stream().map(recipeImgDTO -> {
-                                return RecipeImgRespose.builder()
-                                        .id(recipeImgDTO.getId())
-                                        .image(recipeImgDTO.getImage())
-                                        .recipeId(recipeImgDTO.getRecipeId())
-                                        .build();
-                            }).collect(Collectors.toList()))
-                            .build();
-                }));*/
     }
 
 }
+
+
+
 
 
 
