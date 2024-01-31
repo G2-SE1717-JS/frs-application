@@ -20,9 +20,4 @@ public class UserProfileResponse {
     private String profilePicture;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
-<<<<<<< HEAD:src/main/java/com/frs/application/payload/response/report/ReportResponse.java
-    private ReportStatus reportStatus;
-
-=======
->>>>>>> origin/main:src/main/java/com/frs/application/payload/response/UserProfileResponse.java
 }

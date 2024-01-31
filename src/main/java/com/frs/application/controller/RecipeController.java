@@ -45,13 +45,13 @@ public class RecipeController {
         return recipeService.findByTitle(title);
     }
 
-    @GetMapping("/recipes/status/public")
+    @GetMapping("/status/public")
     @PreAuthorize("hasRole('ROLE_USER')")
     public List<RecipeResponse> getAllPublicRecipe(HttpServletRequest req){
         return recipeService.getRecipesByStatus(req.getRemoteUser(), RecipeStatus.PUBLIC);
     }
 
-    @GetMapping("/recipes/status/private")
+    @GetMapping("/status/private")
     @PreAuthorize("hasRole('ROLE_USER')")
     public List<RecipeResponse> getAllPrivateRecipe(HttpServletRequest req){
         return recipeService.getRecipesByStatus(req.getRemoteUser(), RecipeStatus.PRIVATE);

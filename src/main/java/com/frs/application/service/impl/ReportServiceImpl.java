@@ -71,7 +71,7 @@ public class ReportServiceImpl implements IReportService {
                 .accountId(accountDTO.getId())
                 .recipeId(request.getRecipeId())
                 .description(request.getDescription())
-                .reportStatus(request.getStatus())
+                .reportStatus(ReportStatus.PROCESSING)
                 .build();
         reportDTO = reportLogic.save(reportDTO);
         return ReportResponse.builder()
