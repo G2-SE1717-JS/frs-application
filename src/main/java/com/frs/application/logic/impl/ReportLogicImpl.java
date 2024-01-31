@@ -17,6 +17,17 @@ public class ReportLogicImpl implements IReportLogic {
     private final ReportMapper mapper;
 
     @Override
+    public List<ReportDTO> getAllReportByUser(Long accountId) {
+        List<Report> reportDTOS = repository.findAll(
+                (root, query, criteriaBuilder)
+                        -> criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("accountId"), accountId),
+                        criteriaBuilder.equal(root.get("isDeleted"), false)
+                )
+        );
+        return reportDTOS.stream().map(mapper::toDto).toList();
+    }
+    @Override
     public List<ReportDTO> getAllReportByAdmin() {
         List<Report> reportDTOs = repository.findAll(
                 (root, query, criteriaBuilder)

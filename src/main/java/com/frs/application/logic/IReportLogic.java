@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface IReportLogic extends BaseLogic<ReportDTO, Long> {
 
+    List<ReportDTO> getAllReportByUser(Long accountId);
+
     List<ReportDTO> getAllReportByAdmin();
 
 }
