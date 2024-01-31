@@ -75,7 +75,7 @@ public class FollowAccountServiceImpl implements IFollowAccountService {
         AccountDTO accountDTO = accountLogic.findByUsername(remoteUser);
         FollowAccountDTO followAccountDTO = followAccountLogic.getByIdAndFollowedId(accountDTO.getId(), request.getFollowedAccountId());
         if (Objects.isNull(followAccountDTO)) {
-            throw new SystemBadRequestException(MessageHelper.getMessage("validation.service.not-existed"));
+            throw new SystemBadRequestException(MessageHelper.getMessage("validation.service.followed-account-not-existed"));
         } else {
             followAccountDTO.setDeleted(true);
             followAccountLogic.save(followAccountDTO);
