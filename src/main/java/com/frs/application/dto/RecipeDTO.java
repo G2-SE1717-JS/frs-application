@@ -1,5 +1,6 @@
 package com.frs.application.dto;
 
+import com.frs.application.constants.enums.RecipeStatus;
 import com.frs.core.base.BaseDTO;
 import com.google.api.client.util.DateTime;
 import lombok.Data;
@@ -18,5 +19,5 @@ public class RecipeDTO extends BaseDTO {
     private String description;
     private Long ration;
     private LocalTime cookingTime;
-    private boolean status;
+    private RecipeStatus status;
 }

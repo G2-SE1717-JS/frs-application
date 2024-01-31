@@ -33,7 +33,7 @@ public class ReportController {
         return ResponseEntity.ok(reportService.create(req.getRemoteUser(), request));
     }
 
-    @PostMapping("user/update/{id}")
+    @PutMapping("user/update/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<ReportResponse> update(@PathVariable Long id, @RequestBody String description) {
         return ResponseEntity.ok(reportService.update(id, description));

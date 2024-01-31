@@ -1,5 +1,6 @@
 package com.frs.application.logic.impl;
 
+import com.frs.application.constants.enums.RecipeStatus;
 import com.frs.application.domain.Recipe;
 import com.frs.application.dto.RecipeDTO;
 import com.frs.application.logic.IRecipeLogic;
@@ -65,7 +66,7 @@ public class RecipeLogicImpl implements IRecipeLogic {
     }
 
     @Override
-    public List<RecipeDTO> getAllByAccountIdAndStatus(Long accountId, boolean status){
+    public List<RecipeDTO> getAllByRecipeStatus(Long accountId, RecipeStatus status){
         List<Recipe> recipeDTOS = repository.findAll(
                 (root, query, criteriaBuilder)
                         -> criteriaBuilder.and(

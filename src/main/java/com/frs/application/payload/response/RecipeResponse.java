@@ -2,6 +2,7 @@ package com.frs.application.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.frs.application.constants.enums.RecipeStatus;
 import com.frs.application.domain.Step;
 import com.frs.application.domain.StepImg;
 import lombok.Builder;
@@ -23,7 +24,7 @@ public class RecipeResponse implements Serializable {
     private Long ration;
     private LocalTime cookingTime;
     private List<StepResponse> steps;
-    private boolean status;
+    private RecipeStatus status;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
 }

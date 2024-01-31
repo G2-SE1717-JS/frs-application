@@ -18,7 +18,7 @@ public class RecipeMapper {
                 .description(recipe.getDescription())
                 .ration(recipe.getRation())
                 .cookingTime(recipe.getCookingTime())
-                .status(recipe.isStatus())
+                .status(recipe.getStatus())
                 .isDeleted(recipe.isDeleted())
                 .createdDate(recipe.getCreatedDate())
                 .lastModifiedDate(recipe.getLastModifiedDate())
@@ -34,7 +34,7 @@ public class RecipeMapper {
         recipe.setDescription(recipeDTO.getDescription());
         recipe.setRation(recipeDTO.getRation());
         recipe.setCookingTime(recipeDTO.getCookingTime());
-        recipe.setStatus(recipeDTO.isStatus());
+        recipe.setStatus(recipeDTO.getStatus());
         recipe.setDeleted(recipeDTO.isDeleted());
         recipe.setCreatedDate(recipeDTO.getCreatedDate());
         recipe.setLastModifiedDate(recipeDTO.getLastModifiedDate());

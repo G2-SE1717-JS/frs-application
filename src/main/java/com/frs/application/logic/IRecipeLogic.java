@@ -1,6 +1,7 @@
 package com.frs.application.logic;
 
 
+import com.frs.application.constants.enums.RecipeStatus;
 import com.frs.application.dto.IngredientsDTO;
 import com.frs.application.dto.RecipeDTO;
 import com.frs.core.base.BaseLogic;
@@ -14,6 +15,5 @@ public interface IRecipeLogic extends BaseLogic<RecipeDTO, Long> {
 
     List<RecipeDTO> getAllByAccountId(Long accountId);
 
-    List<RecipeDTO> getAllByAccountIdAndStatus(Long accountId, boolean status);
-
+    List<RecipeDTO> getAllByRecipeStatus(Long accountId, RecipeStatus status);
 }

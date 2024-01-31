@@ -1,5 +1,6 @@
 package com.frs.application.controller;
 
+import com.frs.application.constants.enums.RecipeStatus;
 import com.frs.application.payload.request.recipe.RecipeCreateRequest;
 import com.frs.application.payload.request.recipe.RecipeUpdateRequest;
 import com.frs.application.payload.response.RecipeResponse;
@@ -40,10 +41,16 @@ public class RecipeController {
         return recipeService.getAllByAccountId(req.getRemoteUser());
     }
 
-    @GetMapping("/getByStatus")
+    @GetMapping("/recipes/status/public")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public List<RecipeResponse> getAllByAccountIdAndStatus(HttpServletRequest req, @RequestBody boolean status){
-        return recipeService.getRecipesByAccountIdAndStatus(req.getRemoteUser(), status);
+    public List<RecipeResponse> getAllPublicRecipe(HttpServletRequest req){
+        return recipeService.getRecipesByStatus(req.getRemoteUser(), RecipeStatus.PUBLIC);
+    }
+
+    @GetMapping("/recipes/status/private")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public List<RecipeResponse> getAllPrivateRecipe(HttpServletRequest req){
+        return recipeService.getRecipesByStatus(req.getRemoteUser(), RecipeStatus.PRIVATE);
     }
 
 }

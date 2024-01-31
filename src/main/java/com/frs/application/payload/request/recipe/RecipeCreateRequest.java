@@ -1,6 +1,7 @@
 package com.frs.application.payload.request.recipe;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.frs.application.constants.enums.RecipeStatus;
 import com.frs.application.domain.Step;
 import com.frs.application.domain.StepImg;
 import com.frs.application.payload.request.step.StepCreateRequest;
@@ -17,7 +18,6 @@ public class RecipeCreateRequest {
     private String title;
     private String description;
     private Long ration;
-    private boolean status;
     @JsonProperty("cooking_time")
     private LocalTime cookingTime;
     private List<StepCreateRequest> steps;
