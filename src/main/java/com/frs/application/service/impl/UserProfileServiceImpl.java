@@ -26,7 +26,7 @@ public class UserProfileServiceImpl implements IUserProfileService {
 
     @Override
     public UserProfileResponse getById(Long id) {
-        UserProfileDTO userProfileDTO = profileLogic.getById(id);
+        UserProfileDTO userProfileDTO = profileLogic.getByAccountId(id);
         if (Objects.isNull(userProfileDTO)) {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.user.not-existed"));
         }
@@ -45,7 +45,7 @@ public class UserProfileServiceImpl implements IUserProfileService {
     @Override
     public UserProfileResponse update(String remoteUser, ProfileUpdateRequest request) {
         AccountDTO accountDTO = accountLogic.findByUsername(remoteUser);
-        UserProfileDTO userProfileDTO = profileLogic.getById(accountDTO.getId());
+        UserProfileDTO userProfileDTO = profileLogic.getByAccountId(accountDTO.getId());
         if (Objects.isNull(userProfileDTO)) {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.user.not-existed"));
         }
@@ -72,7 +72,7 @@ public class UserProfileServiceImpl implements IUserProfileService {
     @Override
     public void delete(String remoteUser) {
         AccountDTO accountDTO = accountLogic.findByUsername(remoteUser);
-        UserProfileDTO userProfileDTO = profileLogic.getById(accountDTO.getId());
+        UserProfileDTO userProfileDTO = profileLogic.getByAccountId(accountDTO.getId());
         if (Objects.isNull(userProfileDTO)) {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.user.not-existed"));
         }
@@ -105,7 +105,7 @@ public class UserProfileServiceImpl implements IUserProfileService {
         if (Objects.isNull(accountDTO)) {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.account.not-existed"));
         }
-        UserProfileDTO userProfileDTO = profileLogic.getById(accountDTO.getId());
+        UserProfileDTO userProfileDTO = profileLogic.getByAccountId(accountDTO.getId());
         return UserProfileResponse.builder()
                 .id(userProfileDTO.getId())
                 .accountId(userProfileDTO.getAccountId())

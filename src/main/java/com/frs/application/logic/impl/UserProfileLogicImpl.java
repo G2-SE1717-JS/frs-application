@@ -33,4 +33,16 @@ public class UserProfileLogicImpl implements IUserProfileLogic {
         ).orElse(null);
         return mapper.toDto(userProfile);
     }
+
+    @Override
+    public UserProfileDTO getByAccountId(Long aLong) {
+        UserProfile userProfile = repository.findOne(
+                (root, query, criteriaBuilder)
+                        -> criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("accountId"), aLong),
+                        criteriaBuilder.equal(root.get("isDeleted"), false)
+                )
+        ).orElse(null);
+        return mapper.toDto(userProfile);
+    }
 }
