@@ -15,4 +15,6 @@ public interface IRecipeService {
     List<RecipeResponse> getAllByAccountId(String remoteUser);
     List<RecipeResponse> getRecipesByStatus(String remoteUser, RecipeStatus status);
     public void delete(Long recipeId);
+    List<RecipeResponse> findByTitle(String title);
+
 }

@@ -6,8 +6,7 @@ import com.frs.core.base.BaseLogic;
 import java.util.List;
 
 public interface IReportLogic extends BaseLogic<ReportDTO, Long> {
-
-    List<ReportDTO> findByAccountId(Long accountId);
+    List<ReportDTO> getAllReportByUser(Long accountId);
     List<ReportDTO> getAllReportByAdmin();
 
 }
