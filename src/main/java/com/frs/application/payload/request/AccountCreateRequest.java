@@ -1,5 +1,6 @@
 package com.frs.application.payload.request;
 
+import com.frs.application.payload.request.userprofile.ProfileCreateRequest;
 import com.frs.core.constants.enums.UserRole;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,5 @@ public class AccountCreateRequest {
     private UserRole role;
     private boolean verified;
     private boolean status;
+    private ProfileCreateRequest profileCreateRequest;
 }

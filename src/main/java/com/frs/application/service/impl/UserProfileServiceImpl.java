@@ -81,8 +81,9 @@ public class UserProfileServiceImpl implements IUserProfileService {
     }
 
     @Override
-    public UserProfileResponse create(ProfileCreateRequest request) {
+    public UserProfileResponse create(Long accountId, ProfileCreateRequest request) {
         UserProfileDTO userProfileDTO = UserProfileDTO.builder()
+                .accountId(accountId)
                 .fullName(request.getFullName())
                 .build();
         userProfileDTO = profileLogic.save(userProfileDTO);
@@ -104,12 +105,7 @@ public class UserProfileServiceImpl implements IUserProfileService {
         if (Objects.isNull(accountDTO)) {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.account.not-existed"));
         }
-
         UserProfileDTO userProfileDTO = profileLogic.getById(accountDTO.getId());
-
-        if (Objects.isNull(userProfileDTO)) {
-            throw new SystemBadRequestException(MessageHelper.getMessage("validation.user.not-existed"));
-        }
         return UserProfileResponse.builder()
                 .id(userProfileDTO.getId())
                 .accountId(userProfileDTO.getAccountId())
