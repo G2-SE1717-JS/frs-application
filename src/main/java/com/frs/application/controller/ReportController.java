@@ -35,8 +35,8 @@ public class ReportController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ReportResponse> update(@PathVariable Long id, @RequestBody @Valid ReportUpdateRequest request) {
-        return ResponseEntity.ok(reportService.updateAndAddComment(id, request));
+    public ResponseEntity<ReportResponse> update(@PathVariable Long id, @RequestBody @Valid ReportUpdateRequest request, HttpServletRequest req) {
+        return ResponseEntity.ok(reportService.updateAndAddComment(id, request, req.getRemoteUser()));
     }
 
     @DeleteMapping("{id}")

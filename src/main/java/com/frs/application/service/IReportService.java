@@ -12,7 +12,7 @@ public interface IReportService {
 
     ReportResponse create(String remoteUser, ReportCreateRequest request);
 
-    ReportResponse updateAndAddComment(Long id, ReportUpdateRequest request);
+    ReportResponse updateAndAddComment(Long id, ReportUpdateRequest request, String remoteUser);
 
     List<ReportResponse> getAllReport(String remoteUser);
 

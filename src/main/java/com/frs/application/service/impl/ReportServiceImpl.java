@@ -87,7 +87,8 @@ public class ReportServiceImpl implements IReportService {
                 .build();
     }
 
-    public ReportResponse updateAndAddComment(Long id, ReportUpdateRequest request) {
+    public ReportResponse updateAndAddComment(Long id, ReportUpdateRequest request, String remoteUser) {
+        AccountDTO accountDTO = accountLogic.findByUsername(remoteUser);
         ReportDTO reportDTO = reportLogic.getById(id);
         if (Objects.isNull(reportDTO)) {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.report.not.found"));
@@ -96,17 +97,19 @@ public class ReportServiceImpl implements IReportService {
         if (ReportStatus.APPROVED.equals(reportDTO.getReportStatus()) || ReportStatus.REJECTED.equals(reportDTO.getReportStatus())) {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.report.status.not.processing"));
         }
+        if (UserRole.ROLE_USER.equals(accountDTO.getRole())) {
+            reportDTO.setDescription(request.getDescription());
+            reportDTO = reportLogic.save(reportDTO);
+        } else if (UserRole.ROLE_ADMIN.equals(accountDTO.getRole())) {
+            reportDTO.setReportStatus(request.getAdminCommentRequest().getReportStatus());
+            reportDTO.setAdminResponse(request.getAdminCommentRequest().getAdminResponse());
+            reportDTO.setAdminResponseDate(LocalDateTime.now());
 
-        reportDTO.setDescription(request.getDescription());
-        reportDTO = reportLogic.save(reportDTO);
-
-        reportDTO.setReportStatus(request.getAdminCommentRequest().getReportStatus());
-        reportDTO.setAdminResponse(request.getAdminCommentRequest().getAdminResponse());
-        reportDTO.setAdminResponseDate(LocalDateTime.now());
-
-        if (ReportStatus.APPROVED.equals(request.getAdminCommentRequest().getReportStatus())) {
-            recipeService.delete(reportDTO.getRecipeId());
+            if (ReportStatus.APPROVED.equals(request.getAdminCommentRequest().getReportStatus())) {
+                recipeService.delete(reportDTO.getRecipeId());
+            }
         }
+
         reportLogic.save(reportDTO);
         return ReportResponse.builder()
                 .id(reportDTO.getId())
