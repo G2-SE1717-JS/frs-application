@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class IngredientsIplm implements IIngredientsLogic {
+public class IngredientsImpl implements IIngredientsLogic {
     private final IngredientsRepository repository;
     private final IngredientsMapper mapper;
     @Override

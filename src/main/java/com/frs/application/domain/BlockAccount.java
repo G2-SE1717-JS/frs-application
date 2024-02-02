@@ -8,30 +8,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "accounts")
+@Table(name = "block_account")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
-public class Account extends BaseDomain {
+public class BlockAccount extends BaseDomain {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
+    private Long blockAccountId;
 
-    private String username;
-
-    private String password;
-
-    private boolean status;
-
-    private boolean verified;
-
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private Long accountId;
 
 }
-

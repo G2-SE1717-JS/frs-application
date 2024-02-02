@@ -13,4 +13,5 @@ public interface IRecipeService {
     RecipeResponse update(Long id, RecipeUpdateRequest request);
 
     List<RecipeResponse> getAllByAccountId(String remoteUser);
+
 }
