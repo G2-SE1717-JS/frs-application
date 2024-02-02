@@ -5,4 +5,5 @@ import com.frs.core.base.BaseLogic;
 
 import java.util.List;
 public interface IUserProfileLogic extends BaseLogic<UserProfileDTO,Long>{
+    UserProfileDTO getByAccountId(Long accountId);
 }
