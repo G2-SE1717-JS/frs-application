@@ -2,6 +2,7 @@ package com.frs.application.service;
 
 import com.frs.application.payload.request.recipe.RecipeCreateRequest;
 import com.frs.application.payload.request.recipe.RecipeUpdateRequest;
+import com.frs.application.payload.response.IngredientsResponse;
 import com.frs.application.payload.response.RecipeResponse;
 
 import java.util.List;
@@ -15,5 +16,6 @@ public interface IRecipeService {
     public void delete(Long recipeId);
 
     RecipeResponse getRecipeDetails(Long id);
-//    Long getAccountIdByRecipeId(Long recipeId);
+
+    List<IngredientsResponse> getIngredientOfRecipe(Long id);
 }

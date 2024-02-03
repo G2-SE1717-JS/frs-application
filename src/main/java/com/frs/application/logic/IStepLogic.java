@@ -10,4 +10,5 @@ public interface IStepLogic extends BaseLogic<StepDTO, Long> {
     StepDTO findByName(String name);
     List<StepDTO> findAllByRecipeId(Long recipeId);
 
+
 }

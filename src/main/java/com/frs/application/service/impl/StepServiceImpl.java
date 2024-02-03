@@ -12,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -45,4 +48,24 @@ public class StepServiceImpl implements IStepService {
                 .lastModifiedDate(stepDTO.getLastModifiedDate())
                 .build();
     }
+
+    @Override
+    public List<StepResponse> getAllByRecipeId(Long id) {
+        List<StepDTO> stepDTOS = stepLogic.findAllByRecipeId(id);
+        List<StepImgDTO> stepImgDTOS = stepDTOS.stream().map(stepDTO ->
+                        stepImgLogic.findAllByStepId(stepDTO.getId())).flatMap(List::stream)
+                .collect(Collectors.toList());
+        return stepDTOS.stream().map(stepDTO -> {
+            List<String> imgs = stepImgDTOS.stream().filter(stepImgDTO ->
+                    stepImgDTO.getStepId().equals(stepDTO.getId()))
+                    .map(StepImgDTO::getImage).collect(Collectors.toList());
+            return StepResponse.builder()
+                    .orderValue(stepDTO.getOrderValue())
+                    .description(stepDTO.getDescription())
+                    .stepImgs(imgs)
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
+
 }

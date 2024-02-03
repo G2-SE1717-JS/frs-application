@@ -27,10 +27,7 @@ public class RecipeResponse implements Serializable {
     private List<IngredientsResponse> ingredientsResponses;
     private List<StepResponse> steps;
     private List<StepImgResponse> stepImgResponses;
-
     private List<CommentRecipeResponse> commentRecipeResponses;
-//    private List<RecommendedRecipesResponse> recommendedRecipesResponses;
-
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
 }

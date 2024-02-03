@@ -6,7 +6,9 @@ import com.frs.application.payload.request.recipe.RecipeCreateRequest;
 import com.frs.application.payload.request.recipe.RecipeUpdateRequest;
 import com.frs.application.payload.request.step.StepCreateRequest;
 import com.frs.application.payload.response.*;
+import com.frs.application.service.ICommentRecipeService;
 import com.frs.application.service.IRecipeService;
+import com.frs.application.service.IStepService;
 import com.frs.core.exceptions.SystemBadRequestException;
 import com.frs.core.helpers.MessageHelper;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +30,9 @@ public class RecipeServiceImpl implements IRecipeService {
     private final IRecipeImgLogic recipeImgLogic;
     private final IIngredientsLogic ingredientLogic;
     private final ICommentRecipeLogic commentLogic;
-
     private final IIngreRecipeLogic ingreRecipeLogic;
+    private final IStepService stepService;
+    private final ICommentRecipeService ICommentRecipeService;
 
     @Override
     public List<RecipeResponse> create(RecipeCreateRequest request, String remoteUser) {
@@ -179,22 +182,29 @@ public class RecipeServiceImpl implements IRecipeService {
     }
 
     @Override
-    public RecipeResponse getRecipeDetails(Long id) {
-        RecipeDTO recipeDTO = recipeLogic.getById(id);
-        List<RecipeImgDTO> recipeImgDTOS = recipeImgLogic.getAllByRecipeId(id);
-
-        Long accountId = recipeLogic.getAccountIdByRecipeId(id);
-        AccountDTO accountDTO = accountLogic.getById(accountId);
+    public List<IngredientsResponse> getIngredientOfRecipe(Long id) {
         List<IngreRecipeDTO> ingreRecipeDTOS = ingreRecipeLogic.getAllByRecipeId(id);
         List<IngredientsDTO> ingredientDTOS = ingreRecipeDTOS.stream()
                 .map(ingreRecipeDTO -> ingredientLogic.getById(ingreRecipeDTO.getIngredientsId()))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-        List<StepDTO> stepDTOS = stepLogic.findAllByRecipeId(recipeDTO.getId());
-        List<StepImgDTO> stepImgDTOS = stepDTOS.stream().map(stepDTO ->
-                        stepImgLogic.findAllByStepId(stepDTO.getId())).flatMap(List::stream)
-                .collect(Collectors.toList());
-        List<CommentRecipeDTO> commentDTOS = commentLogic.getAllByRecipeId(id);
+        return ingredientDTOS.stream().map(ingredientDTO -> {
+            return IngredientsResponse.builder()
+                    .id(ingredientDTO.getId())
+                    .name(ingredientDTO.getName())
+                    .image(ingredientDTO.getImage())
+                    .build();
+        }).collect(Collectors.toList());
+    }
+    @Override
+    public RecipeResponse getRecipeDetails(Long id) {
+        RecipeDTO recipeDTO = recipeLogic.getById(id);
+        List<RecipeImgDTO> recipeImgDTOS = recipeImgLogic.getAllByRecipeId(id);
+        Long accountId = recipeLogic.getAccountIdByRecipeId(id);
+        AccountDTO accountDTO = accountLogic.getById(accountId);
+        List<IngredientsResponse> ingredientsResponses = getIngredientOfRecipe(id);
+        List<StepResponse> stepResponses = stepService.getAllByRecipeId(id);
+        List<CommentRecipeResponse> commentRecipeResponses = ICommentRecipeService.getAllByRecipeId(id);
         return RecipeResponse.builder()
                 .id(recipeDTO.getId())
                 .recipeImgResposes(recipeImgDTOS.stream().map(recipeImgDTO -> {
@@ -209,37 +219,12 @@ public class RecipeServiceImpl implements IRecipeService {
                 .username(accountDTO.getUsername())
                 .ration(recipeDTO.getRation())
                 .cookingTime(recipeDTO.getCookingTime())
-                .ingredientsResponses(ingredientDTOS.stream().map(ingredientDTO -> {
-                    return IngredientsResponse.builder()
-                            .id(ingredientDTO.getId())
-                            .name(ingredientDTO.getName())
-                            .image(ingredientDTO.getImage())
-                            .build();
-                }).collect(Collectors.toList()))
+                .ingredientsResponses(ingredientsResponses)
                 .createdDate(recipeDTO.getCreatedDate())
                 .lastModifiedDate(recipeDTO.getLastModifiedDate())
-                .steps(stepDTOS.stream().map(stepDTO -> {
-                    List<String> images = stepImgDTOS.stream().filter(stepImgDTO -> Objects.equals(
-                                    stepImgDTO.getStepId(), stepDTO.getId())).map(StepImgDTO::getImage)
-                            .collect(Collectors.toList());
-                    return StepResponse.builder()
-                            .description(stepDTO.getDescription())
-                            .orderValue(stepDTO.getOrderValue())
-                            .stepImgs(images)
-                            .build();
-                }).collect(Collectors.toList()))
-                .commentRecipeResponses(commentDTOS.stream().map(commentDTO -> {
-                    AccountDTO account = accountLogic.getById(commentDTO.getAccountId());
-                    return CommentRecipeResponse.builder()
-                            .id(commentDTO.getId())
-                            .accountId(commentDTO.getAccountId())
-                            .recipeId(commentDTO.getRecipeId())
-                            .parentId(commentDTO.getParentId())
-                            .description(commentDTO.getDescription())
-                            .createdDate(commentDTO.getCreatedDate())
-                            .lastModifiedDate(commentDTO.getLastModifiedDate())
-                            .build();
-                }).collect(Collectors.toList())).build();
+                .steps(stepResponses)
+                .commentRecipeResponses(commentRecipeResponses)
+                .build();
     }
 
 }
