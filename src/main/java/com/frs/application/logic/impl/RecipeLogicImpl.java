@@ -63,5 +63,9 @@ public class RecipeLogicImpl implements IRecipeLogic {
         );
         return recipeDTOS.stream().map(mapper::toDto).toList();
     }
-
+    @Override
+    public List<RecipeDTO> findByTitle(String title) {
+        List<Recipe> recipe = repository.findByName(title);
+        return recipe.stream().map(mapper::toDto).toList();
+    }
 }
