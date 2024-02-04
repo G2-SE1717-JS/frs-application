@@ -12,27 +12,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/blockAccount")
+@RequestMapping("/block-account")
 @RequiredArgsConstructor
 public class BlockAccountController {
 
-    private final IBlockAccountService iBlockAccountService;
+    private final IBlockAccountService blockAccountService;
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<BlockAccountResponse>> getByAccountID(HttpServletRequest req) {
-        return ResponseEntity.ok(iBlockAccountService.getByAccountID(req.getRemoteUser()));
+        return ResponseEntity.ok(blockAccountService.getByAccountID(req.getRemoteUser()));
     }
 
     @PostMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<BlockAccountResponse> create(@PathVariable Long id, HttpServletRequest req) {
-        return ResponseEntity.ok(iBlockAccountService.create(id, req.getRemoteUser()));
+        return ResponseEntity.ok(blockAccountService.create(id, req.getRemoteUser()));
     }
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        iBlockAccountService.delete(id);
+        blockAccountService.delete(id);
         return ResponseEntity.ok().build();
     }
 }

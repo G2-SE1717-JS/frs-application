@@ -97,10 +97,10 @@ public class ReportServiceImpl implements IReportService {
         if (ReportStatus.APPROVED.equals(reportDTO.getReportStatus()) || ReportStatus.REJECTED.equals(reportDTO.getReportStatus())) {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.report.status.not.processing"));
         }
-        if (UserRole.ROLE_USER.equals(accountDTO.getRole())) {
+        if (Objects.equals(accountDTO.getRole(), UserRole.ROLE_USER)) {
             reportDTO.setDescription(request.getDescription());
             reportDTO = reportLogic.save(reportDTO);
-        } else if (UserRole.ROLE_ADMIN.equals(accountDTO.getRole())) {
+        } else if (Objects.equals(accountDTO.getRole(), UserRole.ROLE_ADMIN)) {
             reportDTO.setReportStatus(request.getAdminCommentRequest().getReportStatus());
             reportDTO.setAdminResponse(request.getAdminCommentRequest().getAdminResponse());
             reportDTO.setAdminResponseDate(LocalDateTime.now());
