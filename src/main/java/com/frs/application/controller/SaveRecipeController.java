@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/save")
+@RequestMapping("/save_recipe")
 @RequiredArgsConstructor
 public class SaveRecipeController {
     private final ISaveRecipeService iSaveRecipeService;

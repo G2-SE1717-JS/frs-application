@@ -48,9 +48,6 @@ public class SaveRecipeServiceImpl implements ISaveRecipeService {
                 .accountId(accountDTO.getId())
                 .build();
 
-        if (saveRecipeLogic.isRecipeSaved( accountDTO.getId(), recipeId)!=null) {
-            throw new SystemBadRequestException(MessageHelper.getMessage("validation.save_recipe.alr-existed"));
-        }
 
         return SaveRecipeResponse.builder()
                 .id(savedRecipeDTO.getId())

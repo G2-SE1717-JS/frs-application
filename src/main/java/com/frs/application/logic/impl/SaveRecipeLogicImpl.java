@@ -31,19 +31,6 @@ public class SaveRecipeLogicImpl implements ISaveRecipeLogic {
     }
 
     @Override
-    public SaveRecipeDTO isRecipeSaved(Long accountId, Long recipeId){
-        SaveRecipe savedRecipe = repository.findOne(
-                (root, query, criteriaBuilder)
-                        -> criteriaBuilder.and(
-                        criteriaBuilder.equal(root.get("accountId"), accountId),
-                        criteriaBuilder.equal(root.get("recipeId"), recipeId),
-                        criteriaBuilder.equal(root.get("isDeleted"), false)
-                )
-        ).orElse(null);
-        return mapper.toDto(savedRecipe);
-    }
-
-    @Override
     public SaveRecipeDTO save(SaveRecipeDTO saveRecipeDTO) {
         SaveRecipe saveRecipe = mapper.toEntity(saveRecipeDTO);
         saveRecipe = repository.save(saveRecipe);

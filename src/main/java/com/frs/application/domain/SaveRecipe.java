@@ -11,7 +11,7 @@ import lombok.Setter;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "save")
+@Table(name = "save_recipe")
 @Getter
 @Setter
 @NoArgsConstructor

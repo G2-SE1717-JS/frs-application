@@ -7,10 +7,6 @@ import java.util.List;
 
 public interface ISaveRecipeLogic extends BaseLogic<SaveRecipeDTO, Long> {
 
-
-
-
     List<SaveRecipeDTO> getAllSaveRecipe(Long accountId);
-     SaveRecipeDTO isRecipeSaved(Long accountId, Long recipeId);
 
 }
