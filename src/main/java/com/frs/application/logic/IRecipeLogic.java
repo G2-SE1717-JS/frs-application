@@ -7,6 +7,7 @@ import com.frs.application.dto.RecipeDTO;
 import com.frs.core.base.BaseLogic;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IRecipeLogic extends BaseLogic<RecipeDTO, Long> {
@@ -20,4 +21,5 @@ public interface IRecipeLogic extends BaseLogic<RecipeDTO, Long> {
     List<RecipeDTO> findByTitle(String title);
 
 
+    List<Object[]> countRecipesByDateRange(LocalDate startDate, LocalDate endDate);
 }

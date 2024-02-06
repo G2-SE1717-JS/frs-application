@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -86,6 +87,11 @@ public class RecipeLogicImpl implements IRecipeLogic {
     public List<RecipeDTO> findByTitle(String title) {
         List<Recipe> recipe = repository.findByName(title);
         return recipe.stream().map(mapper::toDto).toList();
+    }
+
+    @Override
+    public List<Object[]> countRecipesByDateRange(LocalDate startDate, LocalDate endDate) {
+        return repository.countRecipesByDateRange(startDate, endDate);
     }
 
 }
