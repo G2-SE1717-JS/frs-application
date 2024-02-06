@@ -15,6 +15,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long>, JpaSpecif
     @Query("SELECT r FROM Recipe r WHERE r.title like ?1")
     List<Recipe> findByName(String name);
 
-    @Query("SELECT DATE(r.createdDate), COUNT(r) FROM Recipe r WHERE DATE(r.createdDate) >= ?1 AND DATE(r.createdDate) < ?2 GROUP BY DATE(r.createdDate)")
+    @Query("SELECT DATE(r.createdDate), COUNT(r) FROM Recipe r WHERE DATE(r.createdDate) >= ?1 AND DATE(r.createdDate) < ?2 GROUP BY DATE(r.createdDate) ORDER BY DATE(r.createdDate) ASC")
     List<Object[]> countRecipesByDateRange(LocalDate startDate, LocalDate endDate);
 }
