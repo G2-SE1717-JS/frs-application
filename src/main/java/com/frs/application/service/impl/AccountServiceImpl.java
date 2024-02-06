@@ -5,12 +5,13 @@ import com.frs.application.payload.request.AccountCreateRequest;
 import com.frs.application.payload.request.AccountUpdateRequest;
 import com.frs.application.payload.response.AccountResponse;
 import com.frs.application.service.IAccountService;
-import com.frs.application.securiry.WebSecurityConfig;
 import com.frs.core.exceptions.SystemBadRequestException;
 import com.frs.core.helpers.MessageHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -22,7 +23,6 @@ public class AccountServiceImpl implements IAccountService {
     private final IAccountLogic accountLogic;
 
     @Override
-
     public List<AccountResponse> getAll() {
         List<AccountDTO> accountDTOS = accountLogic.findAll();
         return accountDTOS.stream().map(
@@ -109,5 +109,19 @@ public class AccountServiceImpl implements IAccountService {
         }
         accountDTO.setDeleted(true);
         accountLogic.save(accountDTO);
+    }
+
+    @Override
+    public List<AccountResponse> findByCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
+        List<AccountDTO> accountDTOS = accountLogic.findByCreatedDateBetween(startDate, endDate);
+        return accountDTOS.stream().map(
+                accountDTO -> AccountResponse.builder()
+                        .id(accountDTO.getId())
+                        .email(accountDTO.getEmail())
+                        .username(accountDTO.getUsername())
+                        .createdDate(accountDTO.getCreatedDate())
+                        .lastModifiedDate(accountDTO.getLastModifiedDate())
+                        .build()
+        ).collect(Collectors.toList());
     }
 }

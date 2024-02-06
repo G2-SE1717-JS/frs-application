@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -39,4 +41,10 @@ public class AccountController {
     public ResponseEntity<List<AccountResponse>>getAll() {
             return ResponseEntity.ok(accountService.getAll());
         }
+
+    @GetMapping("/latestUser")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<AccountResponse>>findByCreatedDateBetween(@RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
+        return ResponseEntity.ok(accountService.findByCreatedDateBetween(startDate, endDate));
+    }
 }
