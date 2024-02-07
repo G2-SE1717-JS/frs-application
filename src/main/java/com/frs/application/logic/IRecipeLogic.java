@@ -21,5 +21,7 @@ public interface IRecipeLogic extends BaseLogic<RecipeDTO, Long> {
     List<RecipeDTO> findByTitle(String title);
 
 
-    List<Object[]> countRecipesByDateRange(LocalDate startDate, LocalDate endDate);
+    List<Object[]> getNumberOfNewRecipesByDay(LocalDate startDate, LocalDate endDate);
+
+    Long countAllRecipes();
 }

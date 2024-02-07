@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -90,8 +89,13 @@ public class RecipeLogicImpl implements IRecipeLogic {
     }
 
     @Override
-    public List<Object[]> countRecipesByDateRange(LocalDate startDate, LocalDate endDate) {
+    public List<Object[]> getNumberOfNewRecipesByDay(LocalDate startDate, LocalDate endDate) {
         return repository.countRecipesByDateRange(startDate, endDate);
+    }
+
+    @Override
+    public Long countAllRecipes() {
+        return repository.countAllRecipes();
     }
 
 }

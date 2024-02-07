@@ -1,7 +1,7 @@
 package com.frs.application.controller;
 
-import com.frs.application.payload.request.admindashboard.CountRecipesGetRequest;
-import com.frs.application.payload.response.CountRecipesResponse;
+import com.frs.application.payload.request.admindashboard.CountNewRecipesGetRequest;
+import com.frs.application.payload.response.CountfNewRecipesResponse;
 import com.frs.application.service.IAdminDashboardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +18,15 @@ public class AdminDashboardController {
 
     private final IAdminDashboardService adminDashboardService;
 
-    @GetMapping("/total-recipes")
+    @GetMapping("/recipes/count-by-day")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<CountRecipesResponse>> getNewRecipesByDay(@RequestBody @Valid CountRecipesGetRequest request) {
-        return ResponseEntity.ok(adminDashboardService.countRecipesByDay(request));
+    public ResponseEntity<List<CountfNewRecipesResponse>> getNumberOfRecipesByDay(@RequestBody @Valid CountNewRecipesGetRequest request) {
+        return ResponseEntity.ok(adminDashboardService.getNumberOfNewRecipesByDay(request));
     }
 
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Long> countAllRecipes(){
+        return ResponseEntity.ok(adminDashboardService.countAllRecipes());
+    }
 }

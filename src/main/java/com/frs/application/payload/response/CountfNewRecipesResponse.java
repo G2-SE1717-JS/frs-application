@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CountRecipesResponse implements Serializable {
+public class CountfNewRecipesResponse implements Serializable {
     private LocalDate date;
     private Long count;
 }
