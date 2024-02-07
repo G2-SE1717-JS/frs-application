@@ -8,7 +8,6 @@ import com.frs.application.service.IIngredientsService;
 import com.frs.core.exceptions.SystemBadRequestException;
 import com.frs.core.helpers.MessageHelper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class IngredientsServiceImpl implements IIngredientsService {
     private final IIngredientsLogic ingredientsLogic;
     @Override
@@ -92,4 +90,18 @@ public class IngredientsServiceImpl implements IIngredientsService {
         ingredientsDTO.setDeleted(true);
         ingredientsLogic.save(ingredientsDTO);
     }
+    @Override
+    public List<IngredientsResponse> getRandomIngredients() {
+        List<IngredientsDTO> ingredientsDTOS = ingredientsLogic.getRandomIngredients();
+        return ingredientsDTOS.stream().map(
+                ingredientsDTO -> IngredientsResponse.builder()
+                        .id(ingredientsDTO.getId())
+                        .name(ingredientsDTO.getName())
+                        .createdDate(ingredientsDTO.getCreatedDate())
+                        .lastModifiedDate(ingredientsDTO.getLastModifiedDate())
+                        .build()
+        ).collect(Collectors.toList());
+    }
+
+
 }

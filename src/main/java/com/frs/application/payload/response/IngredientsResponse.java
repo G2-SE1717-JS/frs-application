@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -18,4 +19,5 @@ public class IngredientsResponse implements Serializable {
     private String image;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
+
 }

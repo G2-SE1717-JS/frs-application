@@ -25,4 +25,5 @@ public class RecipeResponse implements Serializable {
     private List<StepResponse> steps;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
+
 }
