@@ -27,6 +27,7 @@ public class ReportLogicImpl implements IReportLogic {
         );
         return reportDTOS.stream().map(mapper::toDto).toList();
     }
+
     @Override
     public List<ReportDTO> getAllReportByAdmin() {
         List<Report> reportDTOs = repository.findAll(

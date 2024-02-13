@@ -11,3 +11,4 @@ public class ReportCreateRequest {
     private String description;
 
 }
+
