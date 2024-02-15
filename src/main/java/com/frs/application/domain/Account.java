@@ -34,3 +34,4 @@ public class Account extends BaseDomain {
     private UserRole role;
 
 }
+

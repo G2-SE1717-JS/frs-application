@@ -1,5 +1,6 @@
 package com.frs.application.domain;
 
+import com.frs.application.constants.enums.RecipeStatus;
 import com.frs.core.base.BaseDomain;
 import com.google.api.client.util.DateTime;
 import jakarta.persistence.*;
@@ -25,5 +26,7 @@ public class Recipe extends BaseDomain {
     private String description;
     private Long ration;
     private LocalTime cookingTime;
+    @Enumerated(EnumType.STRING)
+    private RecipeStatus status;
 
 }

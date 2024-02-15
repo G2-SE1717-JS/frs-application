@@ -1,10 +1,13 @@
 package com.frs.application.logic;
 
 
+import com.frs.application.constants.enums.RecipeStatus;
 import com.frs.application.dto.IngredientsDTO;
 import com.frs.application.dto.RecipeDTO;
 import com.frs.core.base.BaseLogic;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IRecipeLogic extends BaseLogic<RecipeDTO, Long> {
@@ -15,5 +18,11 @@ public interface IRecipeLogic extends BaseLogic<RecipeDTO, Long> {
     List<RecipeDTO> getAllByAccountId(Long accountId);
 
     Long getAccountIdByRecipeId(Long recipeId);
+    List<RecipeDTO> getAllByRecipeStatus(Long accountId, RecipeStatus status);
+    List<RecipeDTO> findByTitle(String title);
 
+
+    List<Object[]> getNumberOfNewRecipesByDay(LocalDate startDate, LocalDate endDate);
+
+    Long countAllRecipes();
 }

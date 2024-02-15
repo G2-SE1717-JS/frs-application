@@ -1,7 +1,7 @@
 package com.frs.application.domain;
 
-import com.frs.application.constants.enums.ReportStatus;
 import com.frs.core.base.BaseDomain;
+import com.frs.application.constants.enums.ReportStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +24,7 @@ public class Report extends BaseDomain {
     private Long recipeId;
     private String description;
     @Enumerated(EnumType.STRING)
-    private ReportStatus status;
+    private ReportStatus reportStatus;
     private String adminResponse;
     private LocalDateTime adminResponseDate;
 }
