@@ -36,6 +36,8 @@ public class RecipeServiceImpl implements IRecipeService {
     private final IIngreRecipeLogic ingreRecipeLogic;
     private final IStepService stepService;
     private final ICommentRecipeService ICommentRecipeService;
+    private RecommendedRecipesResponse recommendedRecipeDTOS;
+//>>>>>>> Stashed changes
 
     @Override
     public List<RecipeResponse> create(RecipeCreateRequest request, String remoteUser) {
