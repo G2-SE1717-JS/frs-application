@@ -1,7 +1,7 @@
 package com.frs.application.domain;
 
-import com.frs.application.constants.enums.ReportStatus;
 import com.frs.core.base.BaseDomain;
+import com.frs.application.constants.enums.ReportStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,0 +1,1 @@
+ALTER TABLE `recipe` ADD COLUMN `status` VARCHAR(150) NOT NULL  DEFAULT 'PUBLIC' AFTER `cooking_time`;

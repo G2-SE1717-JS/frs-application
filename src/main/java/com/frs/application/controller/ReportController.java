@@ -1,5 +1,6 @@
 package com.frs.application.controller;
 
+import com.frs.application.payload.request.report.ReportCreateRequest;
 import com.frs.application.payload.request.report.AdminCommentRequest;
 import com.frs.application.payload.request.report.ReportCreateRequest;
 import com.frs.application.payload.request.report.ReportUpdateRequest;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import com.frs.application.payload.request.report.AdminCommentRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequestMapping("/report")
 @RequiredArgsConstructor
 public class ReportController {
+
     private final IReportService reportService;
 
     @GetMapping
@@ -32,8 +35,8 @@ public class ReportController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ReportResponse> update(@PathVariable Long id, @RequestBody @Valid ReportUpdateRequest request) {
-        return ResponseEntity.ok(reportService.updateAndAddComment(id, request));
+    public ResponseEntity<ReportResponse> update(@PathVariable Long id, @RequestBody @Valid ReportUpdateRequest request, HttpServletRequest req) {
+        return ResponseEntity.ok(reportService.updateAndAddComment(id, request, req.getRemoteUser()));
     }
 
     @DeleteMapping("{id}")

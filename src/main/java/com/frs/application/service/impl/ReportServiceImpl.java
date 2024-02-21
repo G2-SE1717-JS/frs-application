@@ -1,11 +1,14 @@
 package com.frs.application.service.impl;
 
+import com.frs.application.dto.AccountDTO;
+import com.frs.application.dto.ReportDTO;
 import com.frs.application.constants.enums.ReportStatus;
 import com.frs.application.dto.*;
 import com.frs.application.logic.IAccountLogic;
 import com.frs.application.logic.IReportLogic;
 import com.frs.application.payload.request.report.AdminCommentRequest;
 import com.frs.application.payload.request.report.ReportCreateRequest;
+import com.frs.application.constants.enums.ReportStatus;
 import com.frs.application.payload.request.report.ReportUpdateRequest;
 import com.frs.application.payload.response.ReportResponse;
 import com.frs.application.service.IRecipeService;
@@ -15,6 +18,7 @@ import com.frs.core.exceptions.SystemBadRequestException;
 import com.frs.core.helpers.MessageHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -31,6 +35,7 @@ public class ReportServiceImpl implements IReportService {
     private final IRecipeService recipeService;
 
     @Override
+
     public List<ReportResponse> getAllReport(String remoteUser) {
         AccountDTO accountDTO = accountLogic.findByUsername(remoteUser);
         if (Objects.isNull(accountDTO)) {
@@ -82,8 +87,8 @@ public class ReportServiceImpl implements IReportService {
                 .build();
     }
 
-    @Override
-    public ReportResponse updateAndAddComment(Long id, ReportUpdateRequest request) {
+    public ReportResponse updateAndAddComment(Long id, ReportUpdateRequest request, String remoteUser) {
+        AccountDTO accountDTO = accountLogic.findByUsername(remoteUser);
         ReportDTO reportDTO = reportLogic.getById(id);
         if (Objects.isNull(reportDTO)) {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.report.not.found"));
@@ -92,17 +97,19 @@ public class ReportServiceImpl implements IReportService {
         if (ReportStatus.APPROVED.equals(reportDTO.getReportStatus()) || ReportStatus.REJECTED.equals(reportDTO.getReportStatus())) {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.report.status.not.processing"));
         }
+        if (Objects.equals(accountDTO.getRole(), UserRole.ROLE_USER)) {
+            reportDTO.setDescription(request.getDescription());
+            reportDTO = reportLogic.save(reportDTO);
+        } else if (Objects.equals(accountDTO.getRole(), UserRole.ROLE_ADMIN)) {
+            reportDTO.setReportStatus(request.getAdminCommentRequest().getReportStatus());
+            reportDTO.setAdminResponse(request.getAdminCommentRequest().getAdminResponse());
+            reportDTO.setAdminResponseDate(LocalDateTime.now());
 
-        reportDTO.setDescription(request.getDescription());
-        reportDTO = reportLogic.save(reportDTO);
-
-        reportDTO.setReportStatus(request.getAdminCommentRequest().getReportStatus());
-        reportDTO.setAdminResponse(request.getAdminCommentRequest().getAdminResponse());
-        reportDTO.setAdminResponseDate(LocalDateTime.now());
-
-        if (ReportStatus.APPROVED.equals(request.getAdminCommentRequest().getReportStatus())) {
-            recipeService.delete(reportDTO.getRecipeId());
+            if (ReportStatus.APPROVED.equals(request.getAdminCommentRequest().getReportStatus())) {
+                recipeService.delete(reportDTO.getRecipeId());
+            }
         }
+
         reportLogic.save(reportDTO);
         return ReportResponse.builder()
                 .id(reportDTO.getId())

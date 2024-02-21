@@ -4,7 +4,6 @@ import com.frs.application.dto.AccountDTO;
 import com.frs.application.dto.BlockAccountDTO;
 import com.frs.application.logic.IAccountLogic;
 import com.frs.application.logic.IBlockAccountLogic;
-import com.frs.application.payload.request.blockAccount.BlockAccountCreateRequest;
 import com.frs.application.payload.response.BlockAccountResponse;
 import com.frs.application.service.IBlockAccountService;
 import com.frs.core.exceptions.SystemBadRequestException;
@@ -24,12 +23,13 @@ public class BlockAccountServiceImpl implements IBlockAccountService {
     private final IAccountLogic accountLogic;
 
     @Override
-    public List<BlockAccountResponse> getByAccountID(Long accountId) {
-        List<BlockAccountDTO> blockAccountDTOS = blockAccountLogic.findByAccountId(accountId);
+    public List<BlockAccountResponse> getByAccountID(String remoteUser) {
+        AccountDTO accountDTO = accountLogic.findByUsername(remoteUser);
+        List<BlockAccountDTO> blockAccountDTOS = blockAccountLogic.findByAccountId(accountDTO.getId());
         return blockAccountDTOS.stream().map(
                 blockAccountDTO -> BlockAccountResponse.builder()
                         .id(blockAccountDTO.getId())
-                        .blockedAccountId(blockAccountDTO.getBlockAccountId())
+                        .blockAccountId(blockAccountDTO.getBlockAccountId())
                         .accountId(blockAccountDTO.getAccountId())
 
                         .build()
@@ -43,14 +43,12 @@ public class BlockAccountServiceImpl implements IBlockAccountService {
                 .blockAccountId(blockAccountId)
                 .build();
         if (blockAccountLogic.isAccountBlocked(blockAccountId, accountDTO.getId())) {
-            blockAccountDTO.setDeleted(true);
-        } else {
-            blockAccountDTO = blockAccountLogic.save(blockAccountDTO);
+            throw new SystemBadRequestException(MessageHelper.getMessage("validation.service.existed"));
         }
         blockAccountDTO = blockAccountLogic.save(blockAccountDTO);
         return BlockAccountResponse.builder()
                 .id(blockAccountDTO.getId())
-                .blockedAccountId(blockAccountDTO.getBlockAccountId())
+                .blockAccountId(blockAccountDTO.getBlockAccountId())
                 .accountId(blockAccountDTO.getAccountId())
                 .build();
     }

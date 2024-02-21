@@ -6,15 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BlockAccountResponse implements Serializable {
-    private Long id;
-    private Long blockAccountId;
-
-    private Long accountId;
+public class CountfNewRecipesResponse implements Serializable {
+    private LocalDate date;
+    private Long count;
 }
