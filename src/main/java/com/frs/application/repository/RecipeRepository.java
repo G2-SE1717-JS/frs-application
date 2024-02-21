@@ -15,8 +15,4 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long>, JpaSpecif
     @Query("SELECT r FROM Recipe r WHERE r.title like ?1")
     List<Recipe> findByName(String name);
 
-
-
-
-
 }
