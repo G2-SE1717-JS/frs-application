@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BlockAccountResponse implements Serializable {
     private Long id;
+    private Long blockAccountId;
+
     private Long accountId;
-    private Long blockedAccountId;
 }
