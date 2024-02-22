@@ -1,5 +1,6 @@
 package com.frs.application.service;
 
+import com.frs.application.domain.Ingredients;
 import com.frs.application.payload.request.ingredients.IngredientsCreateRequest;
 import com.frs.application.payload.request.ingredients.IngredientsUpdateRequest;
 import com.frs.application.payload.response.IngredientsResponse;
@@ -12,4 +13,5 @@ public interface IIngredientsService {
     IngredientsResponse getById(Long id);
     IngredientsResponse update(Long id, IngredientsUpdateRequest request);
     void delete(Long id);
+    List<IngredientsResponse> getRandomIngredients();
 }

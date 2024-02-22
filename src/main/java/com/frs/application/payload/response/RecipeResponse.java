@@ -27,4 +27,5 @@ public class RecipeResponse implements Serializable {
     private RecipeStatus status;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
+
 }

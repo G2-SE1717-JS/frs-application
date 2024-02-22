@@ -54,4 +54,8 @@ public class IngredientsImpl implements IIngredientsLogic {
         ).orElse(null);
         return mapper.toDto(ingredients);
     }
+    public List<IngredientsDTO> getRandomIngredients() {
+        List<Ingredients> ingredientsDTOS = repository.findRandomIngredients();
+        return ingredientsDTOS.stream().map(mapper::toDto).toList();
+    }
 }
