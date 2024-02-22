@@ -16,6 +16,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecipeLogicImpl implements IRecipeLogic {
     private final RecipeRepository repository;
+
+    @Override
+    public Long getAccountIdByRecipeId(Long recipeId) {
+        Long accountId = repository.findOne(
+                (root, query, criteriaBuilder)
+                        -> criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("id"), recipeId),
+                        criteriaBuilder.equal(root.get("isDeleted"), false)
+                )
+        ).orElse(null).getAccountId();
+        return accountId;
+    }
+
     private final RecipeMapper mapper;
 
     @Override

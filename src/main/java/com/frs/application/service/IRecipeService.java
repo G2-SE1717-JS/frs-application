@@ -3,6 +3,7 @@ package com.frs.application.service;
 import com.frs.application.constants.enums.RecipeStatus;
 import com.frs.application.payload.request.recipe.RecipeCreateRequest;
 import com.frs.application.payload.request.recipe.RecipeUpdateRequest;
+import com.frs.application.payload.response.IngredientsResponse;
 import com.frs.application.payload.response.RecipeResponse;
 
 import java.util.List;
@@ -17,4 +18,7 @@ public interface IRecipeService {
     public void delete(Long recipeId);
     List<RecipeResponse> findByTitle(String title);
 
+    RecipeResponse getRecipeDetails(Long id);
+
+    List<IngredientsResponse> getIngredientOfRecipe(Long id);
 }

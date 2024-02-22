@@ -3,7 +3,9 @@ package com.frs.application.controller;
 import com.frs.application.constants.enums.RecipeStatus;
 import com.frs.application.payload.request.recipe.RecipeCreateRequest;
 import com.frs.application.payload.request.recipe.RecipeUpdateRequest;
+import com.frs.application.payload.response.RecipeImgRespose;
 import com.frs.application.payload.response.RecipeResponse;
+import com.frs.application.service.IRecipeImgService;
 import com.frs.application.service.IRecipeService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecipeController {
     private final IRecipeService recipeService;
+    private final IRecipeImgService recipeImgService;
     @PostMapping
     public void create(@RequestBody RecipeCreateRequest recipe, HttpServletRequest req){
         recipeService.create(recipe,req.getRemoteUser());
@@ -50,4 +53,8 @@ public class RecipeController {
         return recipeService.getRecipesByStatus(req.getRemoteUser(), enumStatus);
     }
 
+    @GetMapping("/recipeDetails/{id}")
+    public RecipeResponse getRecipeDetails(@PathVariable Long id){
+        return recipeService.getRecipeDetails(id);
+    }
 }

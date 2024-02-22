@@ -90,6 +90,7 @@ public class IngredientsServiceImpl implements IIngredientsService {
         ingredientsDTO.setDeleted(true);
         ingredientsLogic.save(ingredientsDTO);
     }
+
     @Override
     public List<IngredientsResponse> getRandomIngredients() {
         List<IngredientsDTO> ingredientsDTOS = ingredientsLogic.getRandomIngredients();

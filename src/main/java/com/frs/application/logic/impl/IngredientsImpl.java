@@ -37,6 +37,18 @@ public class IngredientsImpl implements IIngredientsLogic {
     }
 
     @Override
+    public List<IngredientsDTO> getAllByRecipeId(Long id) {
+        List<Ingredients> ingredientsDTOS = repository.findAll(
+                (root, query, criteriaBuilder)
+                        -> criteriaBuilder.and(
+                        criteriaBuilder.equal(root.get("recipeId"), id),
+                        criteriaBuilder.equal(root.get("isDeleted"), false)
+                )
+        );
+        return ingredientsDTOS.stream().map(mapper::toDto).toList();
+    }
+
+    @Override
     public IngredientsDTO save(IngredientsDTO ingredientsDTO) {
         Ingredients ingredients = mapper.toEntity(ingredientsDTO);
         ingredients = repository.save(ingredients);

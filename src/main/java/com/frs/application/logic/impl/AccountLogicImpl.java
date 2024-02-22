@@ -9,6 +9,7 @@ import com.frs.application.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -52,5 +53,14 @@ public class AccountLogicImpl implements IAccountLogic {
     public AccountDTO getById(Long id) {
         Account account = repository.findById(id).orElse(null);
         return mapper.toDto(account);
+    }
+
+    @Override
+    public List<AccountDTO> findByCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
+        List<Account> accounts = repository.findAll(
+                (root, query, criteriaBuilder)
+                        -> criteriaBuilder.between(root.get("createdDate"), startDate, endDate)
+        );
+        return accounts.stream().map(mapper::toDto).toList();
     }
 }

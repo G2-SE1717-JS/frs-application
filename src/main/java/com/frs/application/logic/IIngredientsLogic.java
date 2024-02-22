@@ -11,5 +11,7 @@ public interface IIngredientsLogic extends BaseLogic<IngredientsDTO, Long> {
 
     List<IngredientsDTO> findAll();
 
+    List<IngredientsDTO> getAllByRecipeId(Long id);
+
     List<IngredientsDTO> getRandomIngredients();
 }
