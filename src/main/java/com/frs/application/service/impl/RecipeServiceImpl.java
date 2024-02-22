@@ -219,7 +219,6 @@ public class RecipeServiceImpl implements IRecipeService {
         }
         recipeDTO.setDeleted(true);
         recipeLogic.save(recipeDTO);
-    }
 
     @Override
     public List<IngredientsResponse> getIngredientOfRecipe(Long id) {
@@ -294,6 +293,39 @@ public class RecipeServiceImpl implements IRecipeService {
                     .build();
         }).collect(Collectors.toList());
     }
+
+}
+
+@Override
+public List<RecipeResponse> findByTitle(String title) {
+    List<RecipeDTO> recipeDTOS = recipeLogic.findByTitle("%" + title + "%");
+    return recipeDTOS.stream().map(recipeDTO -> {
+        List<StepDTO> stepDTOS = stepLogic.findAllByRecipeId(recipeDTO.getId());// lấy tất cả các bước của công thức
+        List<StepImgDTO> stepImgDTOS = stepDTOS.stream().map(stepDTO ->
+                        stepImgLogic.findAllByStepId(stepDTO.getId())).flatMap(List::stream)
+                .collect(Collectors.toList());//lấy tất cả các ảnh của các bước
+        return RecipeResponse.builder()
+                .id(recipeDTO.getId())
+                .title(recipeDTO.getTitle())
+                .description(recipeDTO.getDescription())
+                .ration(recipeDTO.getRation())
+                .cookingTime(recipeDTO.getCookingTime())
+                .createdDate(recipeDTO.getCreatedDate())
+                .lastModifiedDate(recipeDTO.getLastModifiedDate())
+                .steps(stepDTOS.stream().map(stepDTO -> {
+                    List<String> images = stepImgDTOS.stream().filter(stepImgDTO -> Objects.equals(
+                                    stepImgDTO.getStepId(), stepDTO.getId())).map(StepImgDTO::getImage)
+                            .collect(Collectors.toList());
+                    return StepResponse.builder()
+                            .description(stepDTO.getDescription())
+                            .orderValue(stepDTO.getOrderValue())
+                            .stepImgs(images)
+                            .build();
+                }).collect(Collectors.toList()))
+                .build();
+    }).collect(Collectors.toList());
+}
+
 
 }
 

@@ -91,5 +91,18 @@ public class IngredientsServiceImpl implements IIngredientsService {
         ingredientsLogic.save(ingredientsDTO);
     }
 
+    @Override
+    public List<IngredientsResponse> getRandomIngredients() {
+        List<IngredientsDTO> ingredientsDTOS = ingredientsLogic.getRandomIngredients();
+        return ingredientsDTOS.stream().map(
+                ingredientsDTO -> IngredientsResponse.builder()
+                        .id(ingredientsDTO.getId())
+                        .name(ingredientsDTO.getName())
+                        .createdDate(ingredientsDTO.getCreatedDate())
+                        .lastModifiedDate(ingredientsDTO.getLastModifiedDate())
+                        .build()
+        ).collect(Collectors.toList());
+    }
+
 
 }

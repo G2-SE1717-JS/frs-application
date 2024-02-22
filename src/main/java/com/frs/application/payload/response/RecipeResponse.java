@@ -33,4 +33,5 @@ public class RecipeResponse implements Serializable {
     private List<RecommendedRecipesResponse> recommendedRecipesResponses;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
+
 }
