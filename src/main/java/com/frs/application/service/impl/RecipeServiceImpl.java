@@ -219,7 +219,7 @@ public class RecipeServiceImpl implements IRecipeService {
         }
         recipeDTO.setDeleted(true);
         recipeLogic.save(recipeDTO);
-
+    }
     @Override
     public List<IngredientsResponse> getIngredientOfRecipe(Long id) {
         List<IngreRecipeDTO> ingreRecipeDTOS = ingreRecipeLogic.getAllByRecipeId(id);
