@@ -12,7 +12,6 @@ public class CategoryMapper {
         return CategoryDTO.builder()
                 .id(entity.getId())
                 .name(entity.getName())
-                .image(entity.getImage())
                 .isDeleted(entity.isDeleted())
                 .createdDate(entity.getCreatedDate())
                 .lastModifiedDate(entity.getLastModifiedDate())
@@ -23,7 +22,6 @@ public class CategoryMapper {
         Category entity = new Category();
         entity.setId(dto.getId());
         entity.setName(dto.getName());
-        entity.setImage(dto.getImage());
         entity.setDeleted(dto.isDeleted());
         entity.setCreatedDate(dto.getCreatedDate());
         entity.setLastModifiedDate(dto.getLastModifiedDate());

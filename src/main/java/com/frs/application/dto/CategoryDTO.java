@@ -9,8 +9,5 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class CategoryDTO extends BaseDTO {
-
     private String name;
-    private String image;
-
 }
