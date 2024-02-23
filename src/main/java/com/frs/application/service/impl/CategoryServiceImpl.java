@@ -39,13 +39,11 @@ public class CategoryServiceImpl implements ICategoryService {
     public CategoryResponse create(CategoryCreateRequest request) {
         CategoryDTO categoryDTO = CategoryDTO.builder()
                 .name(request.getName())
-                .image(request.getImage())
                 .build();
         categoryDTO = categoryLogic.save(categoryDTO);
         return CategoryResponse.builder()
                 .id(categoryDTO.getId())
                 .name(categoryDTO.getName())
-                .image(categoryDTO.getImage())
                 .createdDate(categoryDTO.getCreatedDate())
                 .lastModifiedDate(categoryDTO.getLastModifiedDate())
                 .build();
@@ -60,7 +58,6 @@ public class CategoryServiceImpl implements ICategoryService {
         return CategoryResponse.builder()
                 .id(categoryDTO.getId())
                 .name(categoryDTO.getName())
-                .image(categoryDTO.getImage())
                 .createdDate(categoryDTO.getCreatedDate())
                 .lastModifiedDate(categoryDTO.getLastModifiedDate())
                 .build();
@@ -73,12 +70,10 @@ public class CategoryServiceImpl implements ICategoryService {
             throw new SystemBadRequestException(MessageHelper.getMessage("validation.category.not-existed"));
         }
         categoryDTO.setName(request.getName());
-        categoryDTO.setImage(request.getImage());
         categoryDTO = categoryLogic.save(categoryDTO);
         return CategoryResponse.builder()
                 .id(categoryDTO.getId())
                 .name(categoryDTO.getName())
-                .image(categoryDTO.getImage())
                 .createdDate(categoryDTO.getCreatedDate())
                 .lastModifiedDate(categoryDTO.getLastModifiedDate())
                 .build();

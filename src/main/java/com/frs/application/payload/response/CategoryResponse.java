@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 public class CategoryResponse implements Serializable {
     private Long id;
     private String name;
-    private String image;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
 }
