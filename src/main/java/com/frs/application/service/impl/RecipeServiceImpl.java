@@ -125,6 +125,8 @@ public class RecipeServiceImpl implements IRecipeService {
         recipeDTO.setRation(request.getRation());
         recipeDTO.setCookingTime(request.getCookingTime());
         recipeDTO = recipeLogic.save(recipeDTO);
+        //delete all step by recipe id
+        //goọi create step
         return RecipeResponse.builder()
                 .id(recipeDTO.getId())
                 .title(recipeDTO.getTitle())

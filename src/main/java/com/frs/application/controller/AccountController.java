@@ -22,7 +22,7 @@ public class AccountController {
     public ResponseEntity<AccountResponse> create(@RequestBody @Valid AccountCreateRequest request) {
         return ResponseEntity.ok(accountService.create(request));
     }
-    @GetMapping("/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<AccountResponse> update(@PathVariable Long id, @RequestBody @Valid AccountUpdateRequest request) {
         return ResponseEntity.ok(accountService.update(id, request));
