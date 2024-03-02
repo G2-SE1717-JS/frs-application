@@ -1,6 +1,7 @@
 package com.frs.application.service;
 
 import com.frs.application.payload.request.AccountSignInRequest;
+import com.frs.application.payload.request.RegisterRequest;
 import com.frs.application.payload.request.TokenRefreshRequest;
 import com.frs.application.payload.request.ingredients.IngredientsCreateRequest;
 import com.frs.application.payload.request.ingredients.IngredientsUpdateRequest;
@@ -13,4 +14,5 @@ public interface IAuthService {
     TokenResponse login(AccountSignInRequest loginRequest);
 
     TokenResponse refresh(TokenRefreshRequest refreshRequest);
+    void register(RegisterRequest registerRequest);
 }

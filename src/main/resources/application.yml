@@ -35,6 +35,12 @@ jwt:
   refresh-token:
     expiration: ${JWT_REFRESH_EXPIRATION:10080}
 
+mailgun:
+  api-key: ${MAILGUN_API_KEY}
+  domain: ${MAILGUN_DOMAIN}
+  from: ${MAILGUN_FROM}
+  name: ${MAILGUN_NAME}
+
 server:
   time-zone: ${SERVER_TIME_ZONE:Asia/Ho_Chi_Minh}
   port: ${SERVER_PORT:8080}

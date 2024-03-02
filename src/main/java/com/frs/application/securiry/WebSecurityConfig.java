@@ -34,7 +34,8 @@ public class WebSecurityConfig {
                                         "/auth/google",
                                         "/auth/refresh",
                                         "/public/**",
-                                        "/file/**"
+                                        "/file/**",
+                                        "/auth/register"
                                 ).permitAll()
                                 .anyRequest().authenticated()
                 )

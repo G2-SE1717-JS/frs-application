@@ -1,6 +1,7 @@
 package com.frs.application.controller;
 
 import com.frs.application.payload.request.AccountSignInRequest;
+import com.frs.application.payload.request.RegisterRequest;
 import com.frs.application.payload.request.TokenRefreshRequest;
 import com.frs.application.payload.request.userprofile.ProfileUpdateRequest;
 import com.frs.application.payload.response.TokenResponse;
@@ -45,5 +46,11 @@ public class AuthController {
     @PutMapping()
     public ResponseEntity<UserProfileResponse> update(HttpServletRequest req, @RequestBody @Valid ProfileUpdateRequest request) {
         return ResponseEntity.ok(iUserProfileService.update(req.getRemoteUser(), request));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Void> register(@RequestBody @Valid RegisterRequest registerRequest) {
+        authService.register(registerRequest);
+        return ResponseEntity.ok().build();
     }
 }
